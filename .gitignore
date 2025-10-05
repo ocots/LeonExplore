@@ -1,0 +1,237 @@
+# Fichiers système
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environnements virtuels
+venv/
+env/
+ENV/
+.env
+.venv
+
+# Dépendances
+node_modules/
+__pycache__/
+*.py[cod]
+
+# Fichiers de couverture de test
+coverage/
+.nyc_output/
+
+# Fichiers de cache
+dist/
+.cache/
+
+# Fichiers de débogage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers d'éditeur
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Fichiers de build
+build/
+out/
+*$py.class
+
+# Fichiers de configuration sensibles
+.env
+*.pem
+*.key
+*.crt
+
+# Fichiers générés
+codes.md
+
+# Logs et cache
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+
+# Éditeurs de code
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Fichiers temporaires
+*.tmp
+*.bak
+*.swp
+*~
+
+# Fichiers de compilation
+*.pyc
+*.pyo
+*.pyd
+
+# Fichiers de sauvegarde
+*.bak
+*.backup
+*~
+
+# Fichiers de déploiement
+build/
+dist/
+*.egg-info/
+
+# Fichiers de test
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Fichiers spécifiques au projet
+app.bat  # Si c'est un fichier généré ou spécifique à la configuration locale
+
+# Fichiers de débogage
+*.log
+
+# Fichiers de couverture de test
+.coverage
+.coverage.*
+htmlcov/
+
+# Fichiers de cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environnements virtuels Python
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Fichiers de configuration locaux
+.local/
+
+# Fichiers de configuration spécifiques à l'éditeur
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Fichiers de sauvegarde temporaires
+*~
+*.swp
+*.swo
+
+# Fichiers de cache
+temp/
+tmp/
+
+# Fichiers de dépendances Python
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Fichiers de déploiement
+build/
+dist/
+*.egg
+*.egg-info/
+
+# Fichiers de test
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Fichiers de développement
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Fichiers de débogage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers de cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+
+# Fichiers de déploiement
+build/
+dist/
+.next/
+.nuxt/
+out/
+
+# Fichiers de dépendances
+node_modules/
+
+# Fichiers de configuration locaux
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Fichiers de débogage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers de cache
+.parcel-cache/
+.cache/
+.next/
+.nuxt/
+
+# Fichiers de déploiement
+build/
+dist/
+.next/
+.nuxt/
+out/
+
+# Fichiers de dépendances
+node_modules/
+
+# Fichiers de configuration locaux
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Fichiers de débogage
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers de cache
+.parcel-cache/
+.cache/
+.next/
+.nuxt/
+
+# Fichiers de déploiement
+build/
+dist/
+.next/
+.nuxt/
+out/

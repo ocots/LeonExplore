@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Revision - Unit 1</title>
+    <link rel="stylesheet" href="../../assets/revision.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 English Revision Challenge</h1>
+            <p>Unit 1 - Lesson 1 | Let's ace that test, Léon! 💪</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="score-display">Score: <span id="score">0</span> / <span id="total">0</span></div>
+            
+            <!-- Exercise 1: Present Simple -->
+            <div class="exercise active" id="ex1">
+                <div class="exercise-title">
+                    <span>📝</span>
+                    <span>Exercise 1: Present Simple</span>
+                </div>
+                <div class="question">
+                    <p><strong>1.</strong> My brother __________ (study) English every day.</p>
+                    <input type="text" id="q1-1" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>2.</strong> Teachers __________ (see) everything in class!</p>
+                    <input type="text" id="q1-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3.</strong> We __________ (not/want) to be late for school.</p>
+                    <input type="text" id="q1-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>4.</strong> She __________ (do) her homework every evening.</p>
+                    <input type="text" id="q1-4" placeholder="Your answer...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-check" onclick="checkExercise(1)">Check ✓</button>
+                    <button class="btn-next" onclick="nextExercise(2)">Next →</button>
+                </div>
+                <div class="feedback" id="feedback1"></div>
+            </div>
+            
+            <!-- Exercise 2: Look + Adjective -->
+            <div class="exercise" id="ex2">
+                <div class="exercise-title">
+                    <span>😊</span>
+                    <span>Exercise 2: Look + adjective</span>
+                </div>
+                <div class="question">
+                    <p><strong>1.</strong> The girl __________ upset because she doesn't want to go back to school.</p>
+                    <input type="text" id="q2-1" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>2.</strong> My classmates __________ happy today.</p>
+                    <input type="text" id="q2-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3.</strong> You __________ tired! Did you sleep well?</p>
+                    <input type="text" id="q2-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>Translate:</strong> Il a l'air nerveux avant le test.</p>
+                    <input type="text" id="q2-4" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-check" onclick="checkExercise(2)">Check ✓</button>
+                    <button class="btn-next" onclick="nextExercise(3)">Next →</button>
+                </div>
+                <div class="feedback" id="feedback2"></div>
+            </div>
+            
+            <!-- Exercise 3: Would Rather -->
+            <div class="exercise" id="ex3">
+                <div class="exercise-title">
+                    <span>🎯</span>
+                    <span>Exercise 3: Would rather</span>
+                </div>
+                <div class="question">
+                    <p><strong>1.</strong> I'd rather __________ (play) video games than do my homework.</p>
+                    <input type="text" id="q3-1" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>2.</strong> She would rather __________ (stay) at home than go to school.</p>
+                    <input type="text" id="q3-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>Translate:</strong> Il préférerait lire plutôt qu'étudier.</p>
+                    <input type="text" id="q3-3" placeholder="Your translation...">
+                </div>
+                <div class="question">
+                    <p><strong>Translate:</strong> Nous préférerions regarder la télé plutôt qu'aller à l'école.</p>
+                    <input type="text" id="q3-4" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-check" onclick="checkExercise(3)">Check ✓</button>
+                    <button class="btn-next" onclick="nextExercise(4)">Next →</button>
+                </div>
+                <div class="feedback" id="feedback3"></div>
+            </div>
+            
+            <!-- Exercise 4: Want to -->
+            <div class="exercise" id="ex4">
+                <div class="exercise-title">
+                    <span>💭</span>
+                    <span>Exercise 4: Want to</span>
+                </div>
+                <div class="question">
+                    <p><strong>Quiz:</strong> Which sentence is correct?</p>
+                    <div class="quiz-option" onclick="selectOption(this, 'q4-1', 'a')">A) I want go to the cinema.</div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q4-1', 'b')">B) I want to go to the cinema.</div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q4-1', 'c')">C) I want going to the cinema.</div>
+                    <input type="hidden" id="q4-1">
+                </div>
+                <div class="question">
+                    <p><strong>Complete:</strong> The teenagers __________ (want) to go back to school.</p>
+                    <input type="text" id="q4-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>Translate:</strong> Elle ne veut pas faire ses devoirs.</p>
+                    <input type="text" id="q4-3" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-check" onclick="checkExercise(4)">Check ✓</button>
+                    <button class="btn-next" onclick="nextExercise(5)">Next →</button>
+                </div>
+                <div class="feedback" id="feedback4"></div>
+            </div>
+            
+            <!-- Exercise 5: Advice -->
+            <div class="exercise" id="ex5">
+                <div class="exercise-title">
+                    <span>💡</span>
+                    <span>Exercise 5: Giving Advice</span>
+                </div>
+                <div class="question">
+                    <p><strong>1.</strong> You __________ (should) do your homework every day.</p>
+                    <input type="text" id="q5-1" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>2.</strong> You'd better __________ (be) on time for class!</p>
+                    <input type="text" id="q5-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3.</strong> __________ (Listen) to your teacher! (imperative)</p>
+                    <input type="text" id="q5-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>4.</strong> You __________ (should not) use your phone in class.</p>
+                    <input type="text" id="q5-4" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>Translate:</strong> Ne triche pas pendant le test !</p>
+                    <input type="text" id="q5-5" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-check" onclick="checkExercise(5)">Check ✓</button>
+                    <button class="btn-next" onclick="nextExercise(6)">Next →</button>
+                </div>
+                <div class="feedback" id="feedback5"></div>
+            </div>
+            
+            <!-- Exercise 6: Have to / Don't have to -->
+            <div class="exercise" id="ex6">
+                <div class="exercise-title">
+                    <span>⚠️</span>
+                    <span>Exercise 6: Obligation</span>
+                </div>
+                <div class="question">
+                    <p><strong>Quiz:</strong> "You have to be on time" means:</p>
+                    <div class="quiz-option" onclick="selectOption(this, 'q6-1', 'a')">A) C'est une obligation</div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q6-1', 'b')">B) Ce n'est pas obligatoire</div>
+                    <div class="quiz-option" onclick="selectOption(this, 'q6-1', 'c')">C) C'est interdit</div>
+                    <input type="hidden" id="q6-1">
+                </div>
+                <div class="question">
+                    <p><strong>2.</strong> In our house, you __________ (have to) be strong and determined.</p>
+                    <input type="text" id="q6-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3.</strong> You __________ (not have to) wear a uniform in French schools.</p>
+                    <input type="text" id="q6-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>Translate:</strong> Tu dois faire tes devoirs.</p>
+                    <input type="text" id="q6-4" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-check" onclick="checkExercise(6)">Check ✓</button>
+                    <button class="btn-next" onclick="nextExercise(7)">Next →</button>
+                </div>
+                <div class="feedback" id="feedback6"></div>
+            </div>
+            
+            <!-- Exercise 7: Vocabulary -->
+            <div class="exercise" id="ex7">
+                <div class="exercise-title">
+                    <span>📚</span>
+                    <span>Exercise 7: Vocabulary</span>
+                </div>
+                <div class="question">
+                    <p><strong>Translate to English:</strong></p>
+                    <p>1. Courage: <input type="text" id="q7-1" placeholder="..."></p>
+                    <p>2. Honnêteté: <input type="text" id="q7-2" placeholder="..."></p>
+                    <p>3. Sagesse: <input type="text" id="q7-3" placeholder="..."></p>
+                    <p>4. Gentillesse: <input type="text" id="q7-4" placeholder="..."></p>
+                </div>
+                <div class="question">
+                    <p><strong>Match the adjective to the noun:</strong></p>
+                    <p>5. Creative → <input type="text" id="q7-5" placeholder="..."></p>
+                    <p>6. Curious → <input type="text" id="q7-6" placeholder="..."></p>
+                    <p>7. Patient → <input type="text" id="q7-7" placeholder="..."></p>
+                </div>
+                <div class="btn-container">
+                    <button class="btn-check" onclick="checkExercise(7)">Check ✓</button>
+                    <button class="btn-next" onclick="showFinal()">Finish! 🎉</button>
+                </div>
+                <div class="feedback" id="feedback7"></div>
+            </div>
+            
+            <!-- Final Screen -->
+            <div class="final-screen" id="finalScreen">
+                <div class="emoji" id="finalEmoji">🎉</div>
+                <h2>Congratulations, Léon!</h2>
+                <p>You've completed all exercises!</p>
+                <div class="final-score" id="finalScore">0/0</div>
+                <p id="finalMessage"></p>
+                <button class="btn-next" onclick="location.reload()">Start Again 🔄</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let score = 0;
+        let totalQuestions = 0;
+        
+        const answers = {
+            1: ['studies', 'see', "don't want", 'does'],
+            2: ['looks', 'look', 'look', 'he looks nervous before the test'],
+            3: ['play', 'stay', "he'd rather read than study", "we'd rather watch tv than go to school"],
+            4: ['b', 'want', "she doesn't want to do her homework"],
+            5: ['should', 'be', 'listen', "shouldn't", "don't cheat during the test"],
+            6: ['a', 'have to', "don't have to", 'you have to do your homework'],
+            7: ['courage', 'honesty', 'wisdom', 'kindness', 'creativity', 'curiosity', 'patience']
+        };
+        
+        function selectOption(element, inputId, value) {
+            const parent = element.parentElement;
+            const options = parent.querySelectorAll('.quiz-option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById(inputId).value = value;
+        }
+        
+        function normalizeAnswer(answer) {
+            return answer.toLowerCase().trim().replace(/[.,!?]/g, '');
+        }
+        
+        function checkExercise(exNum) {
+            const correctAnswers = answers[exNum];
+            let correct = 0;
+            let feedbackHTML = '<strong>Results:</strong><br>';
+            
+            correctAnswers.forEach((answer, index) => {
+                const inputId = `q${exNum}-${index + 1}`;
+                const userAnswer = document.getElementById(inputId).value;
+                
+                if (!userAnswer || userAnswer.trim() === '') {
+                    feedbackHTML += `✗ Question ${index + 1}: ${answer}<br>`;
+                    return;
+                }
+                
+                const normalized = normalizeAnswer(userAnswer);
+                const expectedNormalized = normalizeAnswer(answer);
+                
+                if (normalized === expectedNormalized || normalized.includes(expectedNormalized) || expectedNormalized.includes(normalized)) {
+                    correct++;
+                    feedbackHTML += `✓ Question ${index + 1}: Correct!<br>`;
+                } else {
+                    feedbackHTML += `✗ Question ${index + 1}: ${answer}<br>`;
+                }
+            });
+            
+            score += correct;
+            totalQuestions += correctAnswers.length;
+            
+            const feedback = document.getElementById(`feedback${exNum}`);
+            feedback.innerHTML = feedbackHTML;
+            feedback.className = 'feedback ' + (correct === correctAnswers.length ? 'correct' : 'incorrect');
+            feedback.style.display = 'block';
+            
+            updateScore();
+            updateProgress();
+        }
+        
+        function nextExercise(exNum) {
+            document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
+            document.getElementById(`ex${exNum}`).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('total').textContent = totalQuestions;
+        }
+        
+        function updateProgress() {
+            const progress = (totalQuestions / 28) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+        function showFinal() {
+            document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
+            const finalScreen = document.getElementById('finalScreen');
+            finalScreen.classList.add('active');
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
+            
+            let emoji, message;
+            if (percentage >= 90) {
+                emoji = '🏆';
+                message = "Outstanding! You're completely ready for your test!";
+            } else if (percentage >= 75) {
+                emoji = '🌟';
+                message = "Great job! Just review a few points and you'll ace it!";
+            } else if (percentage >= 60) {
+                emoji = '👍';
+                message = "Good effort! Keep practicing those tricky parts.";
+            } else {
+                emoji = '💪';
+                message = "Don't give up! Review the lesson and try again.";
+            }
+            
+            document.getElementById('finalEmoji').textContent = emoji;
+            document.getElementById('finalMessage').textContent = message;
+            
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
