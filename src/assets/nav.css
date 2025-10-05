@@ -55,10 +55,13 @@ body {
     }
 }
 
+/* Correction boutons mobiles */
 @media (max-width: 480px) {
     .button {
-        display: block;
-        width: 100%;
-        margin: 10px 0;
+        display: block;       /* forcer un bloc */
+        width: 100%;          /* prend toute la largeur du container */
+        max-width: 100%;      /* ne dépasse jamais */
+        box-sizing: border-box; /* inclut padding dans la largeur */
+        margin: 10px 0;       /* espacement vertical */
     }
 }
