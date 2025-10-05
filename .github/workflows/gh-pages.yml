@@ -1,22 +1,30 @@
-name: Déploiement sur GitHub Pages
+name: Déploiement GitHub Pages
 
 on:
   push:
     branches:
-      - main
+      - main  # Déclenche le déploiement à chaque push sur main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Vérifier le code
+      # 1️⃣ Récupérer le code du repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Déployer sur GitHub Pages
+      # 2️⃣ Vérifier la structure des fichiers (optionnel mais pratique pour debug)
+      - name: Lister les fichiers
+        run: ls -R
+
+      # 3️⃣ Déployer sur GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./src
-          publish_branch: gh-pages
-          force_orphan: true
+          token: ${{ secrets.GH_PAT }}        # Personal Access Token avec accès repo
+          publish_dir: ./src                   # Dossier à publier
+          publish_branch: gh-pages             # Branche GitHub Pages
+          force_orphan: true                   # Crée une branche propre
+          keep_files: false                     # Supprime les fichiers précédents
+          enable_jekyll: false                  # Désactive Jekyll
