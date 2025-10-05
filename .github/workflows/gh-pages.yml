@@ -20,15 +20,15 @@ jobs:
 
       # 3️⃣ Déployer sur GitHub Pages
       - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        personal_token: ${{ secrets.GH_PAT }}
-        publish_dir: ./src
-        publish_branch: gh-pages
-        force_orphan: true
-        keep_files: false
-        enable_jekyll: false
-        allow_empty_commit: false
-        disable_nojekyll: false
-        exclude_assets: .github
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+            personal_token: ${{ secrets.GH_PAT }}
+            publish_dir: ./src
+            publish_branch: gh-pages
+            force_orphan: true
+            keep_files: false
+            enable_jekyll: false
+            allow_empty_commit: false
+            disable_nojekyll: false
+            exclude_assets: .github
     
