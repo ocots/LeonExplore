@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Revision - Unit 1</title>
-    <link rel="stylesheet" href="../../assets/revision.css">
+    <link rel="stylesheet" href="../../assets/css/revision.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🎯 English Revision Challenge</h1>
-            <p>Unit 1 - Lesson 1 | Let's ace that test, Léon! 💪</p>
+            <p>
+                Unit 1 - Lesson 1 | Let's ace that test, Léon! 💪
+                <a href="unit_1_lesson_1_recap.html" class="recap-link">
+                    📚 Voir le récapitulatif
+                </a>
+            </p>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar"></div>
             </div>
@@ -42,6 +47,7 @@
                     <input type="text" id="q1-4" placeholder="Your answer...">
                 </div>
                 <div class="btn-container">
+                    <button class="btn-prev" onclick="previousExercise(1)" style="display: none;">← Previous</button>
                     <button class="btn-check" onclick="checkExercise(1)">Check ✓</button>
                     <button class="btn-next" onclick="nextExercise(2)">Next →</button>
                 </div>
@@ -71,6 +77,7 @@
                     <input type="text" id="q2-4" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
+                    <button class="btn-prev" onclick="previousExercise(2)">← Previous</button>
                     <button class="btn-check" onclick="checkExercise(2)">Check ✓</button>
                     <button class="btn-next" onclick="nextExercise(3)">Next →</button>
                 </div>
@@ -100,6 +107,7 @@
                     <input type="text" id="q3-4" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
+                    <button class="btn-prev" onclick="previousExercise(3)">← Previous</button>
                     <button class="btn-check" onclick="checkExercise(3)">Check ✓</button>
                     <button class="btn-next" onclick="nextExercise(4)">Next →</button>
                 </div>
@@ -128,6 +136,7 @@
                     <input type="text" id="q4-3" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
+                    <button class="btn-prev" onclick="previousExercise(4)">← Previous</button>
                     <button class="btn-check" onclick="checkExercise(4)">Check ✓</button>
                     <button class="btn-next" onclick="nextExercise(5)">Next →</button>
                 </div>
@@ -161,6 +170,7 @@
                     <input type="text" id="q5-5" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
+                    <button class="btn-prev" onclick="previousExercise(5)">← Previous</button>
                     <button class="btn-check" onclick="checkExercise(5)">Check ✓</button>
                     <button class="btn-next" onclick="nextExercise(6)">Next →</button>
                 </div>
@@ -193,6 +203,7 @@
                     <input type="text" id="q6-4" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
+                    <button class="btn-prev" onclick="previousExercise(6)">← Previous</button>
                     <button class="btn-check" onclick="checkExercise(6)">Check ✓</button>
                     <button class="btn-next" onclick="nextExercise(7)">Next →</button>
                 </div>
@@ -219,6 +230,7 @@
                     <p>7. Patient → <input type="text" id="q7-7" placeholder="..."></p>
                 </div>
                 <div class="btn-container">
+                    <button class="btn-prev" onclick="previousExercise(7)">← Previous</button>
                     <button class="btn-check" onclick="checkExercise(7)">Check ✓</button>
                     <button class="btn-next" onclick="showFinal()">Finish! 🎉</button>
                 </div>
@@ -228,20 +240,21 @@
             <!-- Final Screen -->
             <div class="final-screen" id="finalScreen">
                 <div class="emoji" id="finalEmoji">🎉</div>
-                <h2>Congratulations, Léon!</h2>
-                <p>You've completed all exercises!</p>
+                <h2>Félicitations, Léon !</h2>
+                <p>Tu as terminé tous les exercices !</p>
                 <div class="final-score" id="finalScore">0/0</div>
                 <p id="finalMessage"></p>
-                <button class="btn-next" onclick="location.reload()">Start Again 🔄</button>
+                <div style="margin-top: 20px;">
+                    <button class="btn-new" onclick="startNewSession()">Nouvelle session</button>
+                </div>
             </div>
         </div>
     </div>
     
+    <!-- À la fin du fichier, avant </body> -->
     <script>
-        let score = 0;
-        let totalQuestions = 0;
-        
-        const answers = {
+        // Réponses spécifiques à cet exercice
+        window.answers = {
             1: ['studies', 'see', "don't want", 'does'],
             2: ['looks', 'look', 'look', 'he looks nervous before the test'],
             3: ['play', 'stay', "he'd rather read than study", "we'd rather watch tv than go to school"],
@@ -251,99 +264,10 @@
             7: ['courage', 'honesty', 'wisdom', 'kindness', 'creativity', 'curiosity', 'patience']
         };
         
-        function selectOption(element, inputId, value) {
-            const parent = element.parentElement;
-            const options = parent.querySelectorAll('.quiz-option');
-            options.forEach(opt => opt.classList.remove('selected'));
-            element.classList.add('selected');
-            document.getElementById(inputId).value = value;
-        }
-        
-        function normalizeAnswer(answer) {
-            return answer.toLowerCase().trim().replace(/[.,!?]/g, '');
-        }
-        
-        function checkExercise(exNum) {
-            const correctAnswers = answers[exNum];
-            let correct = 0;
-            let feedbackHTML = '<strong>Results:</strong><br>';
-            
-            correctAnswers.forEach((answer, index) => {
-                const inputId = `q${exNum}-${index + 1}`;
-                const userAnswer = document.getElementById(inputId).value;
-                
-                if (!userAnswer || userAnswer.trim() === '') {
-                    feedbackHTML += `✗ Question ${index + 1}: ${answer}<br>`;
-                    return;
-                }
-                
-                const normalized = normalizeAnswer(userAnswer);
-                const expectedNormalized = normalizeAnswer(answer);
-                
-                if (normalized === expectedNormalized || normalized.includes(expectedNormalized) || expectedNormalized.includes(normalized)) {
-                    correct++;
-                    feedbackHTML += `✓ Question ${index + 1}: Correct!<br>`;
-                } else {
-                    feedbackHTML += `✗ Question ${index + 1}: ${answer}<br>`;
-                }
-            });
-            
-            score += correct;
-            totalQuestions += correctAnswers.length;
-            
-            const feedback = document.getElementById(`feedback${exNum}`);
-            feedback.innerHTML = feedbackHTML;
-            feedback.className = 'feedback ' + (correct === correctAnswers.length ? 'correct' : 'incorrect');
-            feedback.style.display = 'block';
-            
-            updateScore();
-            updateProgress();
-        }
-        
-        function nextExercise(exNum) {
-            document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
-            document.getElementById(`ex${exNum}`).classList.add('active');
-            window.scrollTo(0, 0);
-        }
-        
-        function updateScore() {
-            document.getElementById('score').textContent = score;
-            document.getElementById('total').textContent = totalQuestions;
-        }
-        
-        function updateProgress() {
-            const progress = (totalQuestions / 28) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-        }
-        
-        function showFinal() {
-            document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
-            const finalScreen = document.getElementById('finalScreen');
-            finalScreen.classList.add('active');
-            
-            const percentage = Math.round((score / totalQuestions) * 100);
-            document.getElementById('finalScore').textContent = `${score}/${totalQuestions}`;
-            
-            let emoji, message;
-            if (percentage >= 90) {
-                emoji = '🏆';
-                message = "Outstanding! You're completely ready for your test!";
-            } else if (percentage >= 75) {
-                emoji = '🌟';
-                message = "Great job! Just review a few points and you'll ace it!";
-            } else if (percentage >= 60) {
-                emoji = '👍';
-                message = "Good effort! Keep practicing those tricky parts.";
-            } else {
-                emoji = '💪';
-                message = "Don't give up! Review the lesson and try again.";
-            }
-            
-            document.getElementById('finalEmoji').textContent = emoji;
-            document.getElementById('finalMessage').textContent = message;
-            
-            window.scrollTo(0, 0);
-        }
+        // Initialisation des variables globales
+        window.score = 0;
+        window.totalQuestions = 0;
     </script>
+    <script src="../../assets/js/exercices.js"></script>
 </body>
 </html>

@@ -34,6 +34,30 @@ body {
 
 .header p {
     font-size: 0.95em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.recap-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 3px 10px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.recap-link:hover {
+    transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .progress-bar {
@@ -180,6 +204,19 @@ button {
     box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
 }
 
+.btn-prev {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.btn-prev:hover {
+    background-color: #5a6268;
+}
+
 .feedback {
     margin-top: 12px;
     padding: 12px;
@@ -274,6 +311,31 @@ button {
 .emoji {
     font-size: 2.5em;
     margin: 15px 0;
+}
+
+/* Ajoutez ceci à la fin du fichier */
+.btn-new {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.btn-new:hover {
+    background-color: #138496;
+}
+
+/* Style pour le conteneur des boutons de l'écran final */
+.final-screen .btn-container {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 /* Media queries pour mobiles */
