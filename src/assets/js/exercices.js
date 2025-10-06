@@ -1,6 +1,36 @@
-// Fonctions utilitaires
+window.answeredQuestions = window.answeredQuestions || {};
+
 function normalizeAnswer(answer) {
-    return answer ? answer.toString().toLowerCase().trim().replace(/[.,!?]/g, '') : '';
+    if (!answer) return '';
+    
+    // Convertir en chaîne, minuscules et supprimer les espaces superflus
+    let normalized = answer.toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, ' ');  // Remplacer les espaces multiples par un seul
+    
+    // Gérer les contractions et formes contractées
+    const contractions = [
+        { from: /(\w)'d better/g, to: '$1 had better' },  // 'd better → had better
+        { from: /(\w)'d rather/g, to: '$1 would rather' }, // 'd rather → would rather
+        { from: /(\w)'s/g, to: '$1 is' },                 // 's → is
+        { from: /(\w)'re/g, to: '$1 are' },               // 're → are
+        { from: /(\w)'ll/g, to: '$1 will' },              // 'll → will
+        { from: /(\w)'ve/g, to: '$1 have' },              // 've → have
+        { from: /(\w)n't/g, to: ' $1 not' },              // n't → not (avec espace avant)
+        { from: /(\w)'m/g, to: '$1 am' }                  // 'm → am
+    ];
+    
+    // Appliquer les remplacements
+    contractions.forEach(contraction => {
+        normalized = normalized.replace(contraction.from, contraction.to);
+    });
+    
+    // Supprimer la ponctuation et les espaces en double
+    return normalized
+        .replace(/[.,!?;:]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
 }
 
 function selectOption(element, inputId, value) {
@@ -11,48 +41,176 @@ function selectOption(element, inputId, value) {
     document.getElementById(inputId).value = value;
 }
 
+// Algorithme de distance de Levenshtein
+function levenshteinDistance(str1, str2) {
+    const len1 = str1.length;
+    const len2 = str2.length;
+    const matrix = [];
+    
+    if (len1 === 0) return len2;
+    if (len2 === 0) return len1;
+    
+    // Initialiser la matrice
+    for (let i = 0; i <= len1; i++) {
+        matrix[i] = [i];
+    }
+    for (let j = 0; j <= len2; j++) {
+        matrix[0][j] = j;
+    }
+    
+    // Remplir la matrice
+    for (let i = 1; i <= len1; i++) {
+        for (let j = 1; j <= len2; j++) {
+            if (str1.charAt(i - 1) === str2.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1, // substitution
+                    matrix[i][j - 1] + 1,     // insertion
+                    matrix[i - 1][j] + 1      // suppression
+                );
+            }
+        }
+    }
+    
+    return matrix[len1][len2];
+}
+
+// Fonction pour vérifier si une réponse est correcte avec tolérance
+function isAnswerCorrect(userAnswer, correctAnswer) {
+    const normalized = normalizeAnswer(userAnswer);
+    const expectedNormalized = normalizeAnswer(correctAnswer);
+    
+    // 1. Correspondance exacte
+    if (normalized === expectedNormalized) {
+        return true;
+    }
+
+    // 2. Vérifier la longueur des réponses
+    // Si la réponse de l'utilisateur est plus longue de plus de 2 caractères, c'est suspect
+    if (normalized.length > expectedNormalized.length + 2) {
+        // Vérifier si la différence est due à des mots supplémentaires
+        const extraText = normalized.substring(expectedNormalized.length).trim();
+        if (extraText.split(/\s+/).some(word => word.length > 1)) {
+            return false;
+        }
+    }
+
+    // 3. Tolérance aux fautes de frappe (distance de Levenshtein)
+    const distance = levenshteinDistance(normalized, expectedNormalized);
+    // Limiter la distance à 20% de la longueur de la réponse attendue (max 2)
+    const maxDistance = Math.min(2, Math.floor(expectedNormalized.length * 0.2));
+    
+    if (distance <= maxDistance) {
+        return true;
+    }
+    
+    // 4. Pour les phrases, vérifier chaque mot
+    if (expectedNormalized.includes(' ')) {
+        const expectedWords = expectedNormalized.split(/\s+/);
+        const userWords = normalized.split(/\s+/);
+        
+        // Si le nombre de mots est différent, c'est une erreur
+        if (expectedWords.length !== userWords.length) {
+            return false;
+        }
+        
+        // Vérifier chaque paire de mots
+        for (let i = 0; i < expectedWords.length; i++) {
+            const wordDistance = levenshteinDistance(userWords[i], expectedWords[i]);
+            const wordMaxDistance = expectedWords[i].length < 5 ? 0 : 1;
+            
+            if (wordDistance > wordMaxDistance) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    return false;
+}
+
 // Fonctions principales
+// ✅ Fixed scoring logic: only count *new* answers in total.
+// Update score properly when answers change correctness state.
+
+window.answeredQuestions = window.answeredQuestions || {};
+
 function checkExercise(exNum) {
     if (!window.answers || !window.answers[exNum]) return;
-    
+
     const correctAnswers = window.answers[exNum];
-    let correct = 0;
-    let feedbackHTML = '<strong>Results:</strong><br>';
-    
+    let scoreChange = 0;
+
     correctAnswers.forEach((answer, index) => {
         const inputId = `q${exNum}-${index + 1}`;
-        const userAnswer = document.getElementById(inputId)?.value;
-        
-        if (!userAnswer || userAnswer.trim() === '') {
-            feedbackHTML += `✗ Question ${index + 1}: ${answer}<br>`;
-            return;
+        const inputElement = document.getElementById(inputId);
+        const userAnswer = inputElement?.value;
+        if (!userAnswer?.trim()) return;
+
+        const isCorrect = isAnswerCorrect(userAnswer, answer);
+        const wasAnswered = Object.prototype.hasOwnProperty.call(window.answeredQuestions, inputId);
+        const wasCorrect = window.answeredQuestions[inputId];
+
+        const statusElement = document.getElementById(`${inputId}-status`) || createStatusElement(inputId);
+        updateStatusElement(statusElement, isCorrect);
+
+        // Case 1: new answer
+        if (!wasAnswered) {
+            window.answeredQuestions[inputId] = isCorrect;
+            if (isCorrect) scoreChange += 1;
+            window.totalQuestions = (window.totalQuestions || 0) + 1;
         }
-        
-        const normalized = normalizeAnswer(userAnswer);
-        const expectedNormalized = normalizeAnswer(answer);
-        
-        if (normalized === expectedNormalized) {
-            correct++;
-            feedbackHTML += `✓ Question ${index + 1}: Correct!<br>`;
-        } else {
-            feedbackHTML += `✗ Question ${index + 1}: ${answer}<br>`;
+        // Case 2: answer changed
+        else if (wasCorrect !== isCorrect) {
+            if (isCorrect) scoreChange += 1; // previously wrong → now correct
+            else scoreChange -= 1; // previously correct → now wrong
+            window.answeredQuestions[inputId] = isCorrect;
         }
     });
-    
-    if (window.updateScore) {
-        window.updateScore(correct, correctAnswers.length);
-    }
-    
+
+    // Update global score
+    window.score = (window.score || 0) + scoreChange;
+
+    // Update UI
+    const scoreElement = document.getElementById('score');
+    const totalElement = document.getElementById('total');
+    if (scoreElement) scoreElement.textContent = window.score;
+    if (totalElement) totalElement.textContent = window.totalQuestions;
+
     const feedback = document.getElementById(`feedback${exNum}`);
     if (feedback) {
-        feedback.innerHTML = feedbackHTML;
-        feedback.className = 'feedback ' + (correct === correctAnswers.length ? 'correct' : 'incorrect');
+        const allAnswered = correctAnswers.every((_, i) =>
+            document.getElementById(`q${exNum}-${i + 1}`)?.value.trim()
+        );
+        const allCorrect = correctAnswers.every((ans, i) => {
+            const input = document.getElementById(`q${exNum}-${i + 1}`);
+            return input && isAnswerCorrect(input.value, ans);
+        });
+
+        feedback.innerHTML = allCorrect && allAnswered ?
+            '✅ Toutes les réponses sont correctes !' :
+            !allAnswered ? 'Veuillez répondre aux questions' :
+            '❌ Certaines réponses sont incorrectes';
         feedback.style.display = 'block';
     }
-    
-    if (window.updateProgress) {
-        window.updateProgress();
-    }
+
+    saveProgress();
+}
+
+// Fonctions utilitaires
+function createStatusElement(inputId) {
+    const statusElement = document.createElement('span');
+    statusElement.id = `${inputId}-status`;
+    statusElement.style.marginLeft = '5px';
+    document.getElementById(inputId).insertAdjacentElement('afterend', statusElement);
+    return statusElement;
+}
+
+function updateStatusElement(element, isCorrect) {
+    element.textContent = isCorrect ? '✅ Correct' : '❌ Incorrect';
+    element.style.color = isCorrect ? 'green' : 'red';
 }
 
 function nextExercise(exNum) {
@@ -97,9 +255,6 @@ function showFinal() {
     const finalScreen = document.getElementById('finalScreen');
     if (finalScreen) {
         finalScreen.classList.add('active');
-        
-        // Marquer qu'on est sur l'écran final
-        localStorage.setItem('isFinalScreen', 'true');
         
         const percentage = Math.round((window.score / window.totalQuestions) * 100);
         const finalScore = document.getElementById('finalScore');
@@ -173,6 +328,9 @@ function saveProgress() {
         }
     }
     localStorage.setItem('exerciseAnswers', JSON.stringify(answers));
+
+    // Save answeredQuestions correctness state
+    localStorage.setItem('answeredQuestions', JSON.stringify(window.answeredQuestions));
 }
 
 function loadProgress() {
@@ -227,6 +385,23 @@ function loadProgress() {
             });
         });
     }
+
+    // Restore answeredQuestions correctness state
+    const savedAnswered = localStorage.getItem('answeredQuestions');
+    if (savedAnswered) {
+        window.answeredQuestions = JSON.parse(savedAnswered);
+        Object.entries(window.answeredQuestions).forEach(([inputId, isCorrect]) => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                const statusElement = document.getElementById(`${inputId}-status`) || document.createElement('span');
+                statusElement.id = `${inputId}-status`;
+                statusElement.style.marginLeft = '5px';
+                input.insertAdjacentElement('afterend', statusElement);
+                statusElement.textContent = isCorrect ? '✅ Correct' : '❌ Incorrect';
+                statusElement.style.color = isCorrect ? 'green' : 'red';
+            }
+        });
+    }    
 }
 
 function startNewSession() {
@@ -237,9 +412,22 @@ function startNewSession() {
     localStorage.removeItem('savedTotalQuestions');
     localStorage.removeItem('isFinalScreen');
     
-    // Réinitialiser les champs
+    // Réinitialiser les champs et les statuts
     document.querySelectorAll('input[type="text"]').forEach(input => {
         input.value = '';
+        // Supprimer les indicateurs de statut
+        const statusElement = document.getElementById(`${input.id}-status`);
+        if (statusElement) {
+            statusElement.remove();
+        }
+    });
+    
+    // Réinitialiser le suivi des réponses
+    window.answeredQuestions = {};
+
+    // Cacher tous les messages de feedback
+    document.querySelectorAll('.feedback').forEach(fb => {
+        fb.style.display = 'none';
     });
     
     // Réinitialiser le score
