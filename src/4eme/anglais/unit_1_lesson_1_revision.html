@@ -54,9 +54,9 @@
                     <input type="text" id="q1-4" placeholder="Your answer...">
                 </div>
                 <div class="btn-container">
-                    <button class="btn-prev" onclick="previousExercise(1)" style="display: none;">← Previous</button>
-                    <button class="btn-check" onclick="checkExercise(1)">Check ✓</button>
-                    <button class="btn-next" onclick="nextExercise(2)">Next →</button>
+                    <button class="btn-prev" style="display: none;">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
                 </div>
                 <div class="feedback" id="feedback1"></div>
             </div>
@@ -85,9 +85,9 @@
                     <input type="text" id="q2-4" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
-                    <button class="btn-prev" onclick="previousExercise(2)">← Previous</button>
-                    <button class="btn-check" onclick="checkExercise(2)">Check ✓</button>
-                    <button class="btn-next" onclick="nextExercise(3)">Next →</button>
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>                    
                 </div>
                 <div class="feedback" id="feedback2"></div>
             </div>
@@ -116,9 +116,9 @@
                     <input type="text" id="q3-4" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
-                    <button class="btn-prev" onclick="previousExercise(3)">← Previous</button>
-                    <button class="btn-check" onclick="checkExercise(3)">Check ✓</button>
-                    <button class="btn-next" onclick="nextExercise(4)">Next →</button>
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>                    
                 </div>
                 <div class="feedback" id="feedback3"></div>
             </div>
@@ -132,9 +132,9 @@
                 </div>
                 <div class="question">
                     <p><strong>1. Quiz:</strong> Which sentence is correct?</p>
-                    <div class="quiz-option" onclick="selectOption(this, 'q4-1', 'a')">A) I want go to the cinema.</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q4-1', 'b')">B) I want to go to the cinema.</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q4-1', 'c')">C) I want going to the cinema.</div>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q4-1', 'a')">A) I want go to the cinema.</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q4-1', 'b')">B) I want to go to the cinema.</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q4-1', 'c')">C) I want going to the cinema.</div>
                     <input type="hidden" id="q4-1">
                 </div>
                 <div class="question">
@@ -146,9 +146,9 @@
                     <input type="text" id="q4-3" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
-                    <button class="btn-prev" onclick="previousExercise(4)">← Previous</button>
-                    <button class="btn-check" onclick="checkExercise(4)">Check ✓</button>
-                    <button class="btn-next" onclick="nextExercise(5)">Next →</button>
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
                 </div>
                 <div class="feedback" id="feedback4"></div>
             </div>
@@ -162,9 +162,9 @@
                 </div>
                 <div class="question">
                     <p><strong>1. Quiz:</strong> Which modal verb expresses advice?</p>
-                    <div class="quiz-option" onclick="selectOption(this, 'q5-1', 'a')">A) must</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q5-1', 'b')">B) might</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q5-1', 'c')">C) should</div>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q5-1', 'a')">A) must</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q5-1', 'b')">B) might</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q5-1', 'c')">C) should</div>
                     <input type="hidden" id="q5-1">
                 </div>
                 <div class="question">
@@ -180,9 +180,9 @@
                     <input type="text" id="q5-4" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
-                    <button class="btn-prev" onclick="previousExercise(5)">← Previous</button>
-                    <button class="btn-check" onclick="checkExercise(5)">Check ✓</button>
-                    <button class="btn-next" onclick="nextExercise(6)">Next →</button>
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
                 </div>
                 <div class="feedback" id="feedback5"></div>
             </div>
@@ -196,16 +196,16 @@
                 </div>
                 <div class="question">
                     <p><strong>1. Quiz:</strong> "You have to be on time" means:</p>
-                    <div class="quiz-option" onclick="selectOption(this, 'q6-1', 'a')">A) C'est une obligation</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q6-1', 'b')">B) Ce n'est pas obligatoire</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q6-1', 'c')">C) C'est interdit</div>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q6-1', 'a')">A) C'est une obligation</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q6-1', 'b')">B) Ce n'est pas obligatoire</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q6-1', 'c')">C) C'est interdit</div>
                     <input type="hidden" id="q6-1">
                 </div>
                 <div class="question">
                     <p><strong>2. Quiz:</strong> Which modal verb expresses obligation?</p>
-                    <div class="quiz-option" onclick="selectOption(this, 'q6-2', 'a')">A) must</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q6-2', 'b')">B) might</div>
-                    <div class="quiz-option" onclick="selectOption(this, 'q6-2', 'c')">C) should</div>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q6-2', 'a')">A) must</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q6-2', 'b')">B) might</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q6-2', 'c')">C) should</div>
                     <input type="hidden" id="q6-2">
                 </div>
                 <div class="question">
@@ -221,9 +221,9 @@
                     <input type="text" id="q6-5" placeholder="Your translation...">
                 </div>
                 <div class="btn-container">
-                    <button class="btn-prev" onclick="previousExercise(6)">← Previous</button>
-                    <button class="btn-check" onclick="checkExercise(6)">Check ✓</button>
-                    <button class="btn-next" onclick="nextExercise(7)">Next →</button>
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
                 </div>
                 <div class="feedback" id="feedback6"></div>
             </div>
@@ -249,9 +249,9 @@
                     <p>7. Patient → <input type="text" id="q7-7" placeholder="..."></p>
                 </div>
                 <div class="btn-container">
-                    <button class="btn-prev" onclick="previousExercise(7)">← Previous</button>
-                    <button class="btn-check" onclick="checkExercise(7)">Check ✓</button>
-                    <button class="btn-next" onclick="showFinal()">Finish! 🎉</button>
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
                 </div>
                 <div class="feedback" id="feedback7"></div>
             </div>

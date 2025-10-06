@@ -1,141 +1,179 @@
+// ======================================================
+// ===============   NORMALIZATION & UTILS   ============
+// ======================================================
+
 window.answeredQuestions = window.answeredQuestions || {};
 
 function normalizeAnswer(answer) {
     if (!answer) return '';
-    
-    // Convertir en chaîne, minuscules et supprimer les espaces superflus
-    let normalized = answer.toString()
+    // console.log('🔹 Raw input:', JSON.stringify(answer));
+
+    let normalized = answer
+        .toString()
         .toLowerCase()
         .trim()
-        .replace(/\s+/g, ' ');  // Remplacer les espaces multiples par un seul
-    
-    // Gérer les contractions et formes contractées
+        .replace(/\s+/g, ' ')
+        // ✅ uniformiser tous les types d’apostrophes
+        .replace(/[’‘`]/g, "'");
+
+    // console.log('🔸 After apostrophe normalization:', JSON.stringify(normalized));
+
+    // ✅ Remplacement des contractions courantes
     const contractions = [
-        { from: /(\w)'d better/g, to: '$1 had better' },  // 'd better → had better
-        { from: /(\w)'d rather/g, to: '$1 would rather' }, // 'd rather → would rather
-        { from: /(\w)'s/g, to: '$1 is' },                 // 's → is
-        { from: /(\w)'re/g, to: '$1 are' },               // 're → are
-        { from: /(\w)'ll/g, to: '$1 will' },              // 'll → will
-        { from: /(\w)'ve/g, to: '$1 have' },              // 've → have
-        { from: /(\w)n't/g, to: ' $1 not' },              // n't → not (avec espace avant)
-        { from: /(\w)'m/g, to: '$1 am' }                  // 'm → am
-    ];
-    
-    // Appliquer les remplacements
-    contractions.forEach(contraction => {
-        normalized = normalized.replace(contraction.from, contraction.to);
+        { from: /\bcan't\b/g, to: 'cannot' },
+        { from: /\bwon't\b/g, to: 'will not' },
+        { from: /\bshan't\b/g, to: 'shall not' },
+        { from: /\b(\w*?)n['’]t\b/g, to: '$1 not' },
+        { from: /\b(\w+)'d\b/g, to: '$1 would' },
+        { from: /\b(\w+)'ll\b/g, to: '$1 will' },
+        { from: /\b(\w+)'ve\b/g, to: '$1 have' },
+        { from: /\b(\w+)'re\b/g, to: '$1 are' },
+        { from: /\b(\w+)'m\b/g, to: '$1 am' },
+        { from: /\b(\w+)'s\b/g, to: '$1 is' }
+    ];    
+
+    contractions.forEach(c => {
+        const before = normalized;
+        normalized = normalized.replace(c.from, c.to);
+        if (before !== normalized) {
+            // console.log(`🔁 Applied rule: ${c.from} → ${c.to}`);
+            // console.log('    Result:', JSON.stringify(normalized));
+        }
     });
-    
-    // Supprimer la ponctuation et les espaces en double
-    return normalized
+
+    // Nettoyage final
+    normalized = normalized
         .replace(/[.,!?;:]/g, '')
         .replace(/\s+/g, ' ')
         .trim();
+
+    // console.log('✅ Final normalized:', JSON.stringify(normalized));
+    // console.log('-------------------------------------------');
+
+    return normalized;
 }
+
+function levenshteinDistance(str1, str2) {
+    const len1 = str1.length, len2 = str2.length;
+    const matrix = Array.from({ length: len1 + 1 }, (_, i) => [i]);
+    for (let j = 0; j <= len2; j++) matrix[0][j] = j;
+
+    for (let i = 1; i <= len1; i++) {
+        for (let j = 1; j <= len2; j++) {
+            const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+            matrix[i][j] = Math.min(
+                matrix[i - 1][j] + 1,
+                matrix[i][j - 1] + 1,
+                matrix[i - 1][j - 1] + cost
+            );
+        }
+    }
+    return matrix[len1][len2];
+}
+
+function isAnswerCorrect(userAnswer, correctAnswer) {
+    const norm = normalizeAnswer(userAnswer);
+    const expected = normalizeAnswer(correctAnswer);
+
+    if (norm === expected) return true;
+
+    const expWords = expected.split(/\s+/);
+    const usrWords = norm.split(/\s+/);
+
+    // Si le nombre de mots diffère, ce n’est pas correct
+    if (expWords.length !== usrWords.length) return false;
+
+    // Vérifie chaque mot individuellement
+    for (let i = 0; i < expWords.length; i++) {
+        const expWord = expWords[i];
+        const usrWord = usrWords[i];
+
+        // Vérifie que le mot existe et n'est pas vide
+        if (!usrWord) return false;
+
+        // Vérifie première et dernière lettre
+        if (usrWord[0] !== expWord[0] || usrWord[usrWord.length - 1] !== expWord[expWord.length - 1]) {
+            return false;
+        }
+
+        // Tolérance interne (petite faute autorisée pour les mots longs)
+        const d = levenshteinDistance(usrWord, expWord);
+        if (d > (expWord.length < 5 ? 0 : 1)) return false;
+    }
+
+    return true;
+}
+
+// ======================================================
+// ==================== QUIZ LOGIC ======================
+// ======================================================
 
 function selectOption(element, inputId, value) {
     const parent = element.parentElement;
-    const options = parent.querySelectorAll('.quiz-option');
-    options.forEach(opt => opt.classList.remove('selected'));
+    parent.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
     element.classList.add('selected');
     document.getElementById(inputId).value = value;
 }
 
-// Algorithme de distance de Levenshtein
-function levenshteinDistance(str1, str2) {
-    const len1 = str1.length;
-    const len2 = str2.length;
-    const matrix = [];
-    
-    if (len1 === 0) return len2;
-    if (len2 === 0) return len1;
-    
-    // Initialiser la matrice
-    for (let i = 0; i <= len1; i++) {
-        matrix[i] = [i];
-    }
-    for (let j = 0; j <= len2; j++) {
-        matrix[0][j] = j;
-    }
-    
-    // Remplir la matrice
-    for (let i = 1; i <= len1; i++) {
-        for (let j = 1; j <= len2; j++) {
-            if (str1.charAt(i - 1) === str2.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(
-                    matrix[i - 1][j - 1] + 1, // substitution
-                    matrix[i][j - 1] + 1,     // insertion
-                    matrix[i - 1][j] + 1      // suppression
-                );
-            }
-        }
-    }
-    
-    return matrix[len1][len2];
+function createStatusElement(inputId) {
+    const statusElement = document.createElement('span');
+    statusElement.id = `${inputId}-status`;
+    statusElement.style.marginLeft = '5px';
+    document.getElementById(inputId).insertAdjacentElement('afterend', statusElement);
+    return statusElement;
 }
 
-// Fonction pour vérifier si une réponse est correcte avec tolérance
-function isAnswerCorrect(userAnswer, correctAnswer) {
-    const normalized = normalizeAnswer(userAnswer);
-    const expectedNormalized = normalizeAnswer(correctAnswer);
-    
-    // 1. Correspondance exacte
-    if (normalized === expectedNormalized) {
-        return true;
-    }
+function highlightCharDifferences(norm, expected) {
+    const normWords = norm.split(/\s+/);
+    const expWords = expected.split(/\s+/);
+    const maxLen = Math.max(normWords.length, expWords.length);
+    const result = [];
 
-    // 2. Vérifier la longueur des réponses
-    // Si la réponse de l'utilisateur est plus longue de plus de 2 caractères, c'est suspect
-    if (normalized.length > expectedNormalized.length + 2) {
-        // Vérifier si la différence est due à des mots supplémentaires
-        const extraText = normalized.substring(expectedNormalized.length).trim();
-        if (extraText.split(/\s+/).some(word => word.length > 1)) {
-            return false;
-        }
-    }
+    for (let i = 0; i < maxLen; i++) {
+        const nw = normWords[i] ?? '';
+        const ew = expWords[i] ?? '';
 
-    // 3. Tolérance aux fautes de frappe (distance de Levenshtein)
-    const distance = levenshteinDistance(normalized, expectedNormalized);
-    // Limiter la distance à 20% de la longueur de la réponse attendue (max 2)
-    const maxDistance = Math.min(2, Math.floor(expectedNormalized.length * 0.2));
-    
-    if (distance <= maxDistance) {
-        return true;
-    }
-    
-    // 4. Pour les phrases, vérifier chaque mot
-    if (expectedNormalized.includes(' ')) {
-        const expectedWords = expectedNormalized.split(/\s+/);
-        const userWords = normalized.split(/\s+/);
-        
-        // Si le nombre de mots est différent, c'est une erreur
-        if (expectedWords.length !== userWords.length) {
-            return false;
-        }
-        
-        // Vérifier chaque paire de mots
-        for (let i = 0; i < expectedWords.length; i++) {
-            const wordDistance = levenshteinDistance(userWords[i], expectedWords[i]);
-            const wordMaxDistance = expectedWords[i].length < 5 ? 0 : 1;
-            
-            if (wordDistance > wordMaxDistance) {
-                return false;
+        if (nw === ew) {
+            result.push(nw);
+        } else {
+            // Diff caractère par caractère
+            const maxChar = Math.max(nw.length, ew.length);
+            let highlightedWord = '';
+            for (let j = 0; j < maxChar; j++) {
+                const nc = nw[j] ?? '';
+                const ec = ew[j] ?? '';
+                if (nc === ec) highlightedWord += nc;
+                else highlightedWord += `<span style="background-color:#ffcccc;">${nc}</span>`;
             }
+            result.push(highlightedWord);
         }
-        
-        return true;
     }
-    
-    return false;
+
+    return result.join(' ');
 }
 
-// Fonctions principales
-// ✅ Fixed scoring logic: only count *new* answers in total.
-// Update score properly when answers change correctness state.
+function updateStatusElement(element, isCorrect, userAnswer, correctAnswer) {
+    if (!isCorrect) {
+        element.innerHTML = '❌ Incorrect';
+        element.style.color = 'red';
+    } else {
+        const norm = normalizeAnswer(userAnswer);
+        const expected = normalizeAnswer(correctAnswer);
+        const exactlySame = norm === expected;
 
-window.answeredQuestions = window.answeredQuestions || {};
+        if (exactlySame) {
+            element.textContent = '✅ Correct';
+            element.style.color = 'green';
+        } else {
+            element.innerHTML = `✅ Correct <small style="color:#1E3A8A;">(differences: ${highlightCharDifferences(norm, expected)})</small>`;
+            element.style.color = 'green';
+        }
+    }
+}
+
+// ======================================================
+// ================= SCORE / CHECK ======================
+// ======================================================
 
 function checkExercise(exNum) {
     if (!window.answers || !window.answers[exNum]) return;
@@ -146,70 +184,52 @@ function checkExercise(exNum) {
 
     correctAnswers.forEach((answer, index) => {
         const inputId = `q${exNum}-${index + 1}`;
-        const inputElement = document.getElementById(inputId);
-        const userAnswer = inputElement?.value;
-        
-        // Vérifier si c'est une question de quiz et si aucune option n'est sélectionnée
-        const parent = inputElement?.parentElement;
-        const isQuizQuestion = parent?.querySelector('.quiz-option') !== null;
-        const hasSelectedOption = isQuizQuestion 
-            ? parent.querySelector('.quiz-option.selected') !== null
-            : userAnswer?.trim() !== '';
-            
-        if (!hasSelectedOption) {
+        const input = document.getElementById(inputId);
+        const userAnswer = input?.value ?? '';
+        const parent = input?.parentElement;
+        const isQuiz = parent?.querySelector('.quiz-option') !== null;
+        const hasSelected = isQuiz ? parent.querySelector('.quiz-option.selected') !== null : userAnswer.trim() !== '';
+
+        parent?.classList.remove('unanswered');
+        const statusElement = document.getElementById(`${inputId}-status`) || createStatusElement(inputId);
+
+        if (!hasSelected) {
             hasUnansweredQuestions = true;
-            // Mettre en évidence la question non répondue
-            if (isQuizQuestion) {
-                parent.style.borderLeft = '3px solid orange';
-                parent.style.paddingLeft = '10px';
-            }
+            parent?.classList.add('unanswered');
+            statusElement.textContent = '';
             return;
         }
 
         const isCorrect = isAnswerCorrect(userAnswer, answer);
+        updateStatusElement(statusElement, isCorrect, userAnswer, answer);
+
         const wasAnswered = Object.prototype.hasOwnProperty.call(window.answeredQuestions, inputId);
         const wasCorrect = window.answeredQuestions[inputId];
 
-        const statusElement = document.getElementById(`${inputId}-status`) || createStatusElement(inputId);
-        updateStatusElement(statusElement, isCorrect);
-
-        // Case 1: new answer
         if (!wasAnswered) {
             window.answeredQuestions[inputId] = isCorrect;
             if (isCorrect) scoreChange += 1;
             window.totalQuestions = (window.totalQuestions || 0) + 1;
-        }
-        // Case 2: answer changed
-        else if (wasCorrect !== isCorrect) {
-            if (isCorrect) scoreChange += 1; // previously wrong → now correct
-            else scoreChange -= 1; // previously correct → now wrong
+        } else if (wasCorrect !== isCorrect) {
+            scoreChange += isCorrect ? 1 : -1;
             window.answeredQuestions[inputId] = isCorrect;
         }
     });
 
-    // Update global score
     window.score = (window.score || 0) + scoreChange;
-
-    // Update UI
-    const scoreElement = document.getElementById('score');
-    const totalElement = document.getElementById('total');
-    if (scoreElement) scoreElement.textContent = window.score;
-    if (totalElement) totalElement.textContent = window.totalQuestions;
+    updateScore();
+    updateProgress();
 
     const feedback = document.getElementById(`feedback${exNum}`);
     if (feedback) {
         if (hasUnansweredQuestions) {
-            feedback.innerHTML = '⚠️ Veuillez répondre à toutes les questions';
+            feedback.innerHTML = '⚠️ Please answer all questions';
             feedback.style.color = 'orange';
         } else {
-            const allCorrect = correctAnswers.every((ans, i) => {
-                const input = document.getElementById(`q${exNum}-${i + 1}`);
-                return input && isAnswerCorrect(input.value, ans);
-            });
-
-            feedback.innerHTML = allCorrect ?
-                '✅ Toutes les réponses sont correctes !' :
-                '❌ Certaines réponses sont incorrectes';
+            const allCorrect = correctAnswers.every((ans, i) =>
+                isAnswerCorrect(document.getElementById(`q${exNum}-${i + 1}`).value, ans)
+            );
+            feedback.innerHTML = allCorrect ? '✅ All answers correct!' : '❌ Some answers are incorrect';
             feedback.style.color = allCorrect ? 'green' : 'red';
         }
         feedback.style.display = 'block';
@@ -218,401 +238,269 @@ function checkExercise(exNum) {
     saveProgress();
 }
 
-// Fonctions utilitaires
-function createStatusElement(inputId) {
-    const statusElement = document.createElement('span');
-    statusElement.id = `${inputId}-status`;
-    statusElement.style.marginLeft = '5px';
-    document.getElementById(inputId).insertAdjacentElement('afterend', statusElement);
-    return statusElement;
-}
-
-function updateStatusElement(element, isCorrect) {
-    element.textContent = isCorrect ? '✅ Correct' : '❌ Incorrect';
-    element.style.color = isCorrect ? 'green' : 'red';
-}
-
-function nextExercise(exNum) {
-    document.querySelector(`#ex${exNum-1}`)?.classList.remove('active');
-    document.querySelector(`#ex${exNum}`)?.classList.add('active');
-    window.scrollTo(0, 0);
-}
-
-function previousExercise(currentExNum) {
-    const prevExNum = currentExNum - 1;
-    if (prevExNum >= 1) {
-        document.querySelector(`#ex${currentExNum}`)?.classList.remove('active');
-        document.querySelector(`#ex${prevExNum}`)?.classList.add('active');
-        window.scrollTo(0, 0);
-    }
-}
-
-// Fonctions de score et progression
-function updateScore(correct = 0, total = 0) {
-    if (!window.score) window.score = 0;
-    if (!window.totalQuestions) window.totalQuestions = 0;
-    
-    window.score += correct;
-    window.totalQuestions += total;
-    
-    const scoreElement = document.getElementById('score');
-    const totalElement = document.getElementById('total');
-    if (scoreElement) scoreElement.textContent = window.score;
-    if (totalElement) totalElement.textContent = window.totalQuestions;
+function updateScore() {
+    const s = document.getElementById('score');
+    const t = document.getElementById('total');
+    if (s) s.textContent = window.score || 0;
+    if (t) t.textContent = window.totalQuestions || 0;
 }
 
 function updateProgress() {
     const progressBar = document.getElementById('progressBar');
     if (progressBar && window.totalQuestions) {
-        const progress = (window.totalQuestions / 28) * 100;
+        const progress = Math.min((window.score / (window.totalQuestions || 1)) * 100, 100);
         progressBar.style.width = progress + '%';
     }
 }
 
-function showFinal() {
-    document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
-    const finalScreen = document.getElementById('finalScreen');
-    if (finalScreen) {
-        finalScreen.classList.add('active');
-        
-        const percentage = Math.round((window.score / window.totalQuestions) * 100);
-        const finalScore = document.getElementById('finalScore');
-        const finalMessage = document.getElementById('finalMessage');
-        
-        if (finalScore) finalScore.textContent = `${window.score}/${window.totalQuestions}`;
-        
-        let emoji, message;
-        if (percentage >= 90) {
-            emoji = '🏆';
-            message = "Outstanding! You're completely ready for your test!";
-        } else if (percentage >= 75) {
-            emoji = '🌟';
-            message = "Great job! Just review a few points and you'll ace it!";
-        } else if (percentage >= 60) {
-            emoji = '👍';
-            message = "Good effort! Keep practicing those tricky parts.";
-        } else {
-            emoji = '💪';
-            message = "Don't give up! Review the lesson and try again.";
-        }
-        
-        const finalEmoji = document.getElementById('finalEmoji');
-        if (finalEmoji) finalEmoji.textContent = emoji;
-        if (finalMessage) finalMessage.textContent = message;
-        
-        window.scrollTo(0, 0);
-    }
+// ======================================================
+// ================ NAVIGATION / FINAL ==================
+// ======================================================
+function getCurrentExerciseNumber() {
+    const active = document.querySelector('.exercise.active');
+    if (!active) return null;
+    return parseInt(active.id.replace('ex', ''), 10);
 }
 
-// Initialisation
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.updateScore) window.updateScore();
-    if (window.updateProgress) window.updateProgress();
-});
+function getTotalExercises() {
+    return document.querySelectorAll('.exercise').length;
+}
 
-// Fonctions de sauvegarde et restauration
+function previousExerciseDynamic() {
+    const curr = getCurrentExerciseNumber();
+    if (!curr || curr <= 1) return;
+    nextPrevExercise(curr - 1);
+}
+
+function nextExerciseDynamic() {
+    const curr = getCurrentExerciseNumber();
+    const total = getTotalExercises();
+    if (!curr || curr >= total) return;
+    nextPrevExercise(curr + 1);
+}
+
+function nextPrevExercise(target) {
+    const current = document.querySelector('.exercise.active');
+    if (current) current.classList.remove('active');
+    const nextEx = document.getElementById(`ex${target}`);
+    if (nextEx) nextEx.classList.add('active');
+    window.scrollTo(0, 0);
+    saveProgress();
+}
+
+function showFinal() {
+    document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
+    const final = document.getElementById('finalScreen');
+    if (!final) return;
+    final.classList.add('active');
+
+    const percentage = Math.round((window.score / (window.totalQuestions || 1)) * 100);
+    const finalScore = document.getElementById('finalScore');
+    const finalMsg = document.getElementById('finalMessage');
+    const finalEmoji = document.getElementById('finalEmoji');
+
+    if (finalScore) finalScore.textContent = `${window.score}/${window.totalQuestions}`;
+    let emoji, msg;
+    if (percentage >= 90) { emoji = '🏆'; msg = "Outstanding! You're completely ready for your test!"; }
+    else if (percentage >= 75) { emoji = '🌟'; msg = "Great job! Just review a few points and you'll ace it!"; }
+    else if (percentage >= 60) { emoji = '👍'; msg = "Good effort! Keep practicing those tricky parts."; }
+    else { emoji = '💪'; msg = "Don't give up! Review the lesson and try again."; }
+
+    if (finalEmoji) finalEmoji.textContent = emoji;
+    if (finalMsg) finalMsg.textContent = msg;
+    window.scrollTo(0, 0);
+}
+
+// ======================================================
+// ============== SAVE / LOAD PROGRESS ==================
+// ======================================================
+
 function saveProgress() {
-    if (!window.answers) return;
-    
-    // Sauvegarder le score
     localStorage.setItem('savedScore', window.score || 0);
     localStorage.setItem('savedTotalQuestions', window.totalQuestions || 0);
-    
-    // Vérifier si on est sur l'écran final
+
     const finalScreen = document.getElementById('finalScreen');
-    if (finalScreen && finalScreen.classList.contains('active')) {
-        localStorage.setItem('isFinalScreen', 'true');
-    } else {
+    if (finalScreen?.classList.contains('active')) localStorage.setItem('isFinalScreen', 'true');
+    else {
         localStorage.removeItem('isFinalScreen');
-        // Sauvegarder l'exercice actif seulement si on n'est pas sur l'écran final
-        const activeExercise = document.querySelector('.exercise.active');
-        if (activeExercise) {
-            const activeId = activeExercise.id;
-            localStorage.setItem('activeExercise', activeId);
-        }
+        const active = document.querySelector('.exercise.active');
+        if (active) localStorage.setItem('activeExercise', active.id);
     }
-    
-    // Sauvegarder les réponses
+
     const answers = {};
     for (let i = 1; i <= 7; i++) {
-        const exerciseAnswers = {};
+        const exAnswers = {};
         for (let j = 1; j <= 10; j++) {
             const input = document.getElementById(`q${i}-${j}`);
-            if (input) {
-                exerciseAnswers[`q${i}-${j}`] = input.value;
-            }
+            if (input) exAnswers[`q${i}-${j}`] = input.value;
         }
-        if (Object.keys(exerciseAnswers).length > 0) {
-            answers[`exercise${i}`] = exerciseAnswers;
-        }
+        if (Object.keys(exAnswers).length > 0) answers[`exercise${i}`] = exAnswers;
     }
     localStorage.setItem('exerciseAnswers', JSON.stringify(answers));
-
-    // Save answeredQuestions correctness state
     localStorage.setItem('answeredQuestions', JSON.stringify(window.answeredQuestions));
 }
 
 function loadProgress() {
-    // Restaurer le score
-    const savedScore = localStorage.getItem('savedScore');
-    const savedTotalQuestions = localStorage.getItem('savedTotalQuestions');
-    
-    if (savedScore !== null) {
-        window.score = parseInt(savedScore, 10);
-    }
-    if (savedTotalQuestions !== null) {
-        window.totalQuestions = parseInt(savedTotalQuestions, 10);
-    }
-    
-    // Mettre à jour l'affichage du score
+    // Score et total
+    window.score = parseInt(localStorage.getItem('savedScore') || '0', 10);
+    window.totalQuestions = parseInt(localStorage.getItem('savedTotalQuestions') || '0', 10);
     updateScore();
-    
-    // Vérifier si on était sur l'écran final
-    const isFinalScreen = localStorage.getItem('isFinalScreen') === 'true';
-    
-    if (isFinalScreen) {
-        // Afficher directement l'écran final
-        document.querySelectorAll('.exercise').forEach(ex => {
-            ex.classList.remove('active');
-        });
-        showFinal();
-    } else {
-        // Restaurer l'exercice actif
-        const savedExercise = localStorage.getItem('activeExercise');
-        if (savedExercise) {
-            document.querySelectorAll('.exercise').forEach(ex => {
-                ex.classList.remove('active');
-            });
-            const exerciseToActivate = document.getElementById(savedExercise);
-            if (exerciseToActivate) {
-                exerciseToActivate.classList.add('active');
-            }
-        }
-    }
-    
-    // Restaurer les réponses
-    const savedAnswers = localStorage.getItem('exerciseAnswers');
-    if (savedAnswers) {
-        const answers = JSON.parse(savedAnswers);
-        Object.keys(answers).forEach(exercise => {
-            const exerciseAnswers = answers[exercise];
-            Object.keys(exerciseAnswers).forEach(inputId => {
-                const input = document.getElementById(inputId);
-                if (input) {
-                    input.value = exerciseAnswers[inputId];
-                    
-                    // Si c'est une question de quiz, sélectionner visuellement l'option
-                    const parent = input.parentElement;
-                    if (parent && parent.querySelector('.quiz-option') !== null) {
-                        const selectedValue = exerciseAnswers[inputId];
-                        const options = parent.querySelectorAll('.quiz-option');
-                        options.forEach(opt => {
-                            if (opt.getAttribute('onclick').includes(`'${inputId}', '${selectedValue}'`)) {
-                                opt.classList.add('selected');
-                            } else {
-                                opt.classList.remove('selected');
-                            }
-                        });
-                    }
-                }
-            });
-        });
+    updateProgress();
+
+    // Final screen
+    if (localStorage.getItem('isFinalScreen') === 'true') return showFinal();
+
+    // Exercice actif
+    const savedExercise = localStorage.getItem('activeExercise');
+    if (savedExercise) {
+        document.querySelectorAll('.exercise').forEach(e => e.classList.remove('active'));
+        document.getElementById(savedExercise)?.classList.add('active');
     }
 
-    // Restore answeredQuestions correctness state
-    const savedAnswered = localStorage.getItem('answeredQuestions');
-    if (savedAnswered) {
-        window.answeredQuestions = JSON.parse(savedAnswered);
-        Object.entries(window.answeredQuestions).forEach(([inputId, isCorrect]) => {
+    // Réponses sauvegardées
+    const savedAnswers = JSON.parse(localStorage.getItem('exerciseAnswers') || '{}');
+    Object.values(savedAnswers).forEach(ex => {
+        Object.entries(ex).forEach(([inputId, val]) => {
             const input = document.getElementById(inputId);
-            if (input) {
-                const statusElement = document.getElementById(`${inputId}-status`) || document.createElement('span');
-                statusElement.id = `${inputId}-status`;
-                statusElement.style.marginLeft = '5px';
-                input.insertAdjacentElement('afterend', statusElement);
-                statusElement.textContent = isCorrect ? '✅ Correct' : '❌ Incorrect';
-                statusElement.style.color = isCorrect ? 'green' : 'red';
+            if (!input) return;
+            input.value = val;
+
+            const parent = input.parentElement;
+            const options = parent?.querySelectorAll('.quiz-option');
+            if (options?.length) {
+                // Restaurer la sélection du quiz
+                options.forEach(opt => {
+                    if (opt.dataset.value === val) opt.classList.add('selected');
+                    else opt.classList.remove('selected');
+                });
             }
         });
-    }    
+    });
+
+    // Restaurer answeredQuestions et statuts
+    const savedAnswered = JSON.parse(localStorage.getItem('answeredQuestions') || '{}');
+    window.answeredQuestions = savedAnswered;
+    Object.entries(savedAnswered).forEach(([inputId, isCorrect]) => {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const status = document.getElementById(`${inputId}-status`) || createStatusElement(inputId);
+        const exNum = parseInt(inputId.split('-')[0].replace('q', ''), 10);
+        const index = parseInt(inputId.split('-')[1], 10) - 1;
+        const correctAnswer = window.answers?.[exNum]?.[index];
+
+        if (input.value.trim() === '') {
+            status.textContent = '';
+        } else if (correctAnswer !== undefined) {
+            updateStatusElement(status, isCorrect, input.value, correctAnswer);
+        }
+    });
 }
 
+// ======================================================
+// ================= SESSION RESET ======================
+// ======================================================
+
 function startNewSession() {
-    // Effacer le stockage local
-    localStorage.removeItem('exerciseAnswers');
-    localStorage.removeItem('activeExercise');
-    localStorage.removeItem('savedScore');
-    localStorage.removeItem('savedTotalQuestions');
-    localStorage.removeItem('isFinalScreen');
-    
-    // Réinitialiser les champs et les statuts
+    ['exerciseAnswers', 'activeExercise', 'savedScore', 'savedTotalQuestions', 'isFinalScreen'].forEach(k => localStorage.removeItem(k));
+
     document.querySelectorAll('input[type="text"], input[type="hidden"]').forEach(input => {
         input.value = '';
-        
-        // Réinitialiser les boutons de quiz
         const parent = input.parentElement;
-        if (parent && parent.querySelector('.quiz-option')) {
-            // Désélectionner visuellement toutes les options de quiz
-            parent.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            // Supprimer la mise en évidence des questions
-            parent.style.borderLeft = '';
-            parent.style.paddingLeft = '';
+        if (parent) {
+            parent.classList.remove('unanswered');
+            parent.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
         }
-        // Supprimer les indicateurs de statut
-        const statusElement = document.getElementById(`${input.id}-status`);
-        if (statusElement) {
-            statusElement.remove();
-        }
+        document.getElementById(`${input.id}-status`)?.remove();
     });
-    
-    // Réinitialiser le suivi des réponses
-    window.answeredQuestions = {};
 
-    // Cacher tous les messages de feedback
-    document.querySelectorAll('.feedback').forEach(fb => {
-        fb.style.display = 'none';
-    });
-    
-    // Réinitialiser le score
+    window.answeredQuestions = {};
     window.score = 0;
     window.totalQuestions = 0;
     updateScore();
     updateProgress();
-    
-    // Revenir au premier exercice
-    document.querySelectorAll('.exercise').forEach((ex, index) => {
-        ex.classList.toggle('active', index === 0);
-    });
-    
-    // Masquer l'écran final
-    const finalScreen = document.getElementById('finalScreen');
-    if (finalScreen) {
-        finalScreen.classList.remove('active');
-    }
-    
-    // Faire défiler vers le haut
+
+    document.querySelectorAll('.feedback').forEach(fb => fb.style.display = 'none');
+    document.querySelectorAll('.exercise').forEach((ex, i) => ex.classList.toggle('active', i === 0));
+    document.getElementById('finalScreen')?.classList.remove('active');
     window.scrollTo(0, 0);
 }
 
-// Sauvegarder la progression lors du changement d'exercice
-const originalNextExercise = window.nextExercise;
-window.nextExercise = function(exNum) {
-    originalNextExercise(exNum);
-    saveProgress();
-};
+// ======================================================
+// =================== ANSWERS TOGGLE ===================
+// ======================================================
 
-const originalPreviousExercise = window.previousExercise;
-window.previousExercise = function(exNum) {
-    originalPreviousExercise(exNum);
-    saveProgress();
-};
-
-// Variable pour stocker le timer
 let hideAnswersTimer = null;
-
-// Fonction pour masquer les réponses
 function hideAnswers() {
     const container = document.getElementById('answersContainer');
     const button = document.getElementById('toggleAnswers');
-    
     if (container && button) {
         container.style.display = 'none';
         button.textContent = 'Show answers';
     }
-    
-    // Réinitialiser le timer
-    if (hideAnswersTimer) {
-        clearTimeout(hideAnswersTimer);
-        hideAnswersTimer = null;
-    }
+    if (hideAnswersTimer) clearTimeout(hideAnswersTimer);
+    hideAnswersTimer = null;
 }
 
-// Fonction pour afficher/masquer les réponses de l'exercice actif
 function toggleAnswers() {
     const container = document.getElementById('answersContainer');
     const button = document.getElementById('toggleAnswers');
-    const activeExercise = document.querySelector('.exercise.active');
-    
-    if (!activeExercise) return;
-    
-    const exerciseId = activeExercise.id; // ex: 'ex1', 'ex2', etc.
-    const exerciseNum = exerciseId.replace('ex', ''); // '1', '2', etc.
-    
-    // Annuler tout timer en cours
-    if (hideAnswersTimer) {
-        clearTimeout(hideAnswersTimer);
-        hideAnswersTimer = null;
-    }
-    
-    if (container.style.display === 'none' || !container.style.display) {
-        // Afficher les réponses
-        container.style.display = 'block';
-        button.textContent = 'Hide answers';
-        
-        // Récupérer ou générer les réponses
-        const answersList = document.getElementById('answersList');
-        answersList.innerHTML = ''; // Vider la liste des réponses
-        
-        if (window.answers && window.answers[exerciseNum]) {
-            // Générer la liste des réponses pour l'exercice actif
-            window.answers[exerciseNum].forEach((answer, index) => {
-                const answerItem = document.createElement('div');
-                answerItem.className = 'answer-item';
-                answerItem.innerHTML = `<strong>Question ${index + 1}:</strong> ${answer}`;
-                answersList.appendChild(answerItem);
-            });
-            
-            // Faire défiler jusqu'au conteneur des réponses
-            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            
-            // Démarrer le timer pour masquer les réponses après 10 secondes
-            hideAnswersTimer = setTimeout(hideAnswers, 10000); // 10 secondes
-        }
-    } else {
-        // Masquer les réponses immédiatement
-        hideAnswers();
+    const active = document.querySelector('.exercise.active');
+    if (!active || !container || !button) return;
+
+    if (container.style.display === 'block') return hideAnswers();
+
+    container.style.display = 'block';
+    button.textContent = 'Hide answers';
+    const list = document.getElementById('answersList');
+    list.innerHTML = '';
+
+    const exNum = active.id.replace('ex', '');
+    if (window.answers && window.answers[exNum]) {
+        window.answers[exNum].forEach((ans, i) => {
+            const div = document.createElement('div');
+            div.className = 'answer-item';
+            div.innerHTML = `<strong>Question ${i + 1}:</strong> ${ans}`;
+            list.appendChild(div);
+        });
+        container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        hideAnswersTimer = setTimeout(hideAnswers, 10000);
     }
 }
 
-// Initialisation
+// ======================================================
+// ================= INITIALIZATION =====================
+// ======================================================
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Charger la progression sauvegardée
+    if (typeof window.score === 'undefined') window.score = 0;
+    if (typeof window.totalQuestions === 'undefined') window.totalQuestions = 0;
+    updateScore();
+    updateProgress();
     loadProgress();
-    
-    // Ajouter l'événement à tous les boutons de bascule des réponses
-    document.querySelectorAll('.btn-answers').forEach(button => {
-        button.addEventListener('click', toggleAnswers);
+
+    document.querySelectorAll('.btn-prev').forEach(btn => {
+        btn.addEventListener('click', previousExerciseDynamic);
+    });
+    document.querySelectorAll('.btn-next').forEach(btn => {
+        btn.addEventListener('click', nextExerciseDynamic);
+    });
+    document.querySelectorAll('.btn-check').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const exNum = getCurrentExerciseNumber();
+            if (exNum) checkExercise(exNum);
+        });
     });
     
-    // Masquer les réponses si on clique ailleurs sur la page
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.btn-answers') && !e.target.closest('.answers-container')) {
-            hideAnswers();
-        }
+    document.querySelectorAll('.btn-answers').forEach(btn => btn.addEventListener('click', toggleAnswers));
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.btn-answers') && !e.target.closest('.answers-container')) hideAnswers();
     });
-    
-    // Sauvegarder les réponses lorsqu'elles changent
-    document.querySelectorAll('input[type="text"]').forEach(input => {
-        input.addEventListener('input', saveProgress);
-    });
-    
-    // Sauvegarder lors de la vérification des réponses
-    const originalCheckExercise = window.checkExercise;
-    window.checkExercise = function(exNum) {
-        originalCheckExercise(exNum);
-        saveProgress();
-    };
-    
-    // Gestion du rechargement de la page
+    document.querySelectorAll('input[type="text"]').forEach(inp => inp.addEventListener('input', () => { saveProgress(); updateProgress(); }));
     window.addEventListener('beforeunload', saveProgress);
 });
 
-// Exposer les fonctions globales
+// Expose
 window.checkExercise = checkExercise;
-window.nextExercise = nextExercise;
-window.previousExercise = previousExercise;
 window.updateScore = updateScore;
 window.updateProgress = updateProgress;
 window.showFinal = showFinal;
