@@ -536,3 +536,10 @@ button {
         min-width: auto;
     }
 }
+
+.unanswered {
+    border-left: 3px solid orange;
+    padding-left: 10px;
+    background: rgba(255,165,0,0.05);
+    transition: background 0.3s ease;
+}
