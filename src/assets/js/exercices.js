@@ -464,10 +464,89 @@ window.previousExercise = function(exNum) {
     saveProgress();
 };
 
+// Variable pour stocker le timer
+let hideAnswersTimer = null;
+
+// Fonction pour masquer les réponses
+function hideAnswers() {
+    const container = document.getElementById('answersContainer');
+    const button = document.getElementById('toggleAnswers');
+    
+    if (container && button) {
+        container.style.display = 'none';
+        button.textContent = '👁️ Show answers';
+    }
+    
+    // Réinitialiser le timer
+    if (hideAnswersTimer) {
+        clearTimeout(hideAnswersTimer);
+        hideAnswersTimer = null;
+    }
+}
+
+// Fonction pour afficher/masquer les réponses de l'exercice actif
+function toggleAnswers() {
+    const container = document.getElementById('answersContainer');
+    const button = document.getElementById('toggleAnswers');
+    const activeExercise = document.querySelector('.exercise.active');
+    
+    if (!activeExercise) return;
+    
+    const exerciseId = activeExercise.id; // ex: 'ex1', 'ex2', etc.
+    const exerciseNum = exerciseId.replace('ex', ''); // '1', '2', etc.
+    
+    // Annuler tout timer en cours
+    if (hideAnswersTimer) {
+        clearTimeout(hideAnswersTimer);
+        hideAnswersTimer = null;
+    }
+    
+    if (container.style.display === 'none' || !container.style.display) {
+        // Afficher les réponses
+        container.style.display = 'block';
+        button.textContent = '👁️ Hide answers';
+        
+        // Récupérer ou générer les réponses
+        const answersList = document.getElementById('answersList');
+        answersList.innerHTML = ''; // Vider la liste des réponses
+        
+        if (window.answers && window.answers[exerciseNum]) {
+            // Générer la liste des réponses pour l'exercice actif
+            window.answers[exerciseNum].forEach((answer, index) => {
+                const answerItem = document.createElement('div');
+                answerItem.className = 'answer-item';
+                answerItem.innerHTML = `<strong>Question ${index + 1}:</strong> ${answer}`;
+                answersList.appendChild(answerItem);
+            });
+            
+            // Faire défiler jusqu'au conteneur des réponses
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            // Démarrer le timer pour masquer les réponses après 10 secondes
+            hideAnswersTimer = setTimeout(hideAnswers, 10000); // 10 secondes
+        }
+    } else {
+        // Masquer les réponses immédiatement
+        hideAnswers();
+    }
+}
+
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
     // Charger la progression sauvegardée
     loadProgress();
+    
+    // Ajouter l'événement à tous les boutons de bascule des réponses
+    document.querySelectorAll('.btn-answers').forEach(button => {
+        button.addEventListener('click', toggleAnswers);
+    });
+    
+    // Masquer les réponses si on clique ailleurs sur la page
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.btn-answers') && !e.target.closest('.answers-container')) {
+            hideAnswers();
+        }
+    });
     
     // Sauvegarder les réponses lorsqu'elles changent
     document.querySelectorAll('input[type="text"]').forEach(input => {

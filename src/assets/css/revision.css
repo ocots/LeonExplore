@@ -204,6 +204,125 @@ button {
     box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
 }
 
+/* Styles pour le bouton Voir les réponses dans la barre de titre */
+.exercise-title {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.exercise-title > span:first-of-type {
+    /* Style pour l'icône (premier span) */
+    flex: 0 0 auto;
+}
+
+.exercise-title > span:nth-of-type(2) {
+    /* Style pour le texte du titre (deuxième span) */
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.exercise-title .btn-answers {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+.btn-answers {
+    background: linear-gradient(135deg, #3a7bd5 0%, #00d1b2 100%);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.75em;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-answers:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(79, 172, 254, 0.3);
+}
+
+/* Ajustement pour les écrans moyens */
+@media (min-width: 601px) and (max-width: 900px) {
+    .btn-answers {
+        padding: 5px 8px;
+        min-width: 40px;
+    }
+    .btn-answers span {
+        display: none;
+    }
+    .btn-answers::before {
+        content: '👁️';
+        font-size: 1em;
+    }
+}
+
+/* Ajustement pour les petits écrans */
+@media (max-width: 600px) {
+    .btn-answers {
+        padding: 4px 6px;
+        min-width: 30px;
+        font-size: 0.7em;
+    }
+    .btn-answers span {
+        display: none;
+    }
+    .btn-answers::before {
+        content: '👁️';
+        font-size: 0.9em;
+    }
+}
+
+/* Conteneur des réponses */
+.answers-container {
+    background: #f0f7ff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-left: 4px solid #4facfe;
+}
+
+.answers-container h3 {
+    color: #2c5282;
+    margin-bottom: 12px;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.answers-container h3::before {
+    content: '📋';
+    font-size: 1.1em;
+}
+
+.answer-item {
+    background: white;
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 0.95em;
+}
+
+.answer-item strong {
+    color: #2c5282;
+    margin-right: 5px;
+}
+
 .btn-prev {
     background-color: #6c757d;
     color: white;
