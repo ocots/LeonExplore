@@ -90,7 +90,7 @@ body {
 
 .exercise.active {
     display: block;
-    animation: slideIn 0.5s ease;
+    animation: slideIn 0.6s ease;
 }
 
 @keyframes slideIn {
@@ -321,7 +321,7 @@ button {
     padding: 12px;
     border-radius: 6px;
     display: none;
-    animation: fadeIn 0.5s;
+    animation: fadeIn 0.6s;
     font-size: 0.9em;
     line-height: 1.6;
 }
@@ -479,6 +479,7 @@ button {
     input[type="text"] {
         padding: 10px;
         font-size: 16px; /* Empêche le zoom sur iOS */
+        -webkit-text-size-adjust: 100%;
     }
     
     button {
