@@ -142,12 +142,29 @@ function checkExercise(exNum) {
 
     const correctAnswers = window.answers[exNum];
     let scoreChange = 0;
+    let hasUnansweredQuestions = false;
 
     correctAnswers.forEach((answer, index) => {
         const inputId = `q${exNum}-${index + 1}`;
         const inputElement = document.getElementById(inputId);
         const userAnswer = inputElement?.value;
-        if (!userAnswer?.trim()) return;
+        
+        // Vérifier si c'est une question de quiz et si aucune option n'est sélectionnée
+        const parent = inputElement?.parentElement;
+        const isQuizQuestion = parent?.querySelector('.quiz-option') !== null;
+        const hasSelectedOption = isQuizQuestion 
+            ? parent.querySelector('.quiz-option.selected') !== null
+            : userAnswer?.trim() !== '';
+            
+        if (!hasSelectedOption) {
+            hasUnansweredQuestions = true;
+            // Mettre en évidence la question non répondue
+            if (isQuizQuestion) {
+                parent.style.borderLeft = '3px solid orange';
+                parent.style.paddingLeft = '10px';
+            }
+            return;
+        }
 
         const isCorrect = isAnswerCorrect(userAnswer, answer);
         const wasAnswered = Object.prototype.hasOwnProperty.call(window.answeredQuestions, inputId);
@@ -181,18 +198,20 @@ function checkExercise(exNum) {
 
     const feedback = document.getElementById(`feedback${exNum}`);
     if (feedback) {
-        const allAnswered = correctAnswers.every((_, i) =>
-            document.getElementById(`q${exNum}-${i + 1}`)?.value.trim()
-        );
-        const allCorrect = correctAnswers.every((ans, i) => {
-            const input = document.getElementById(`q${exNum}-${i + 1}`);
-            return input && isAnswerCorrect(input.value, ans);
-        });
+        if (hasUnansweredQuestions) {
+            feedback.innerHTML = '⚠️ Veuillez répondre à toutes les questions';
+            feedback.style.color = 'orange';
+        } else {
+            const allCorrect = correctAnswers.every((ans, i) => {
+                const input = document.getElementById(`q${exNum}-${i + 1}`);
+                return input && isAnswerCorrect(input.value, ans);
+            });
 
-        feedback.innerHTML = allCorrect && allAnswered ?
-            '✅ Toutes les réponses sont correctes !' :
-            !allAnswered ? 'Veuillez répondre aux questions' :
-            '❌ Certaines réponses sont incorrectes';
+            feedback.innerHTML = allCorrect ?
+                '✅ Toutes les réponses sont correctes !' :
+                '❌ Certaines réponses sont incorrectes';
+            feedback.style.color = allCorrect ? 'green' : 'red';
+        }
         feedback.style.display = 'block';
     }
 
@@ -381,6 +400,20 @@ function loadProgress() {
                 const input = document.getElementById(inputId);
                 if (input) {
                     input.value = exerciseAnswers[inputId];
+                    
+                    // Si c'est une question de quiz, sélectionner visuellement l'option
+                    const parent = input.parentElement;
+                    if (parent && parent.querySelector('.quiz-option') !== null) {
+                        const selectedValue = exerciseAnswers[inputId];
+                        const options = parent.querySelectorAll('.quiz-option');
+                        options.forEach(opt => {
+                            if (opt.getAttribute('onclick').includes(`'${inputId}', '${selectedValue}'`)) {
+                                opt.classList.add('selected');
+                            } else {
+                                opt.classList.remove('selected');
+                            }
+                        });
+                    }
                 }
             });
         });
@@ -413,8 +446,20 @@ function startNewSession() {
     localStorage.removeItem('isFinalScreen');
     
     // Réinitialiser les champs et les statuts
-    document.querySelectorAll('input[type="text"]').forEach(input => {
+    document.querySelectorAll('input[type="text"], input[type="hidden"]').forEach(input => {
         input.value = '';
+        
+        // Réinitialiser les boutons de quiz
+        const parent = input.parentElement;
+        if (parent && parent.querySelector('.quiz-option')) {
+            // Désélectionner visuellement toutes les options de quiz
+            parent.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            // Supprimer la mise en évidence des questions
+            parent.style.borderLeft = '';
+            parent.style.paddingLeft = '';
+        }
         // Supprimer les indicateurs de statut
         const statusElement = document.getElementById(`${input.id}-status`);
         if (statusElement) {
@@ -474,7 +519,7 @@ function hideAnswers() {
     
     if (container && button) {
         container.style.display = 'none';
-        button.textContent = '👁️ Show answers';
+        button.textContent = 'Show answers';
     }
     
     // Réinitialiser le timer
@@ -504,7 +549,7 @@ function toggleAnswers() {
     if (container.style.display === 'none' || !container.style.display) {
         // Afficher les réponses
         container.style.display = 'block';
-        button.textContent = '👁️ Hide answers';
+        button.textContent = 'Hide answers';
         
         // Récupérer ou générer les réponses
         const answersList = document.getElementById('answersList');

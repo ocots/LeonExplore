@@ -234,20 +234,8 @@ button {
 .btn-answers {
     background: linear-gradient(135deg, #3a7bd5 0%, #00d1b2 100%);
     color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 0.75em;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 40px;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 6px 15px;
+    font-size: 0.8em;
 }
 
 .btn-answers:hover {
@@ -264,10 +252,6 @@ button {
     .btn-answers span {
         display: none;
     }
-    .btn-answers::before {
-        content: '👁️';
-        font-size: 1em;
-    }
 }
 
 /* Ajustement pour les petits écrans */
@@ -279,10 +263,6 @@ button {
     }
     .btn-answers span {
         display: none;
-    }
-    .btn-answers::before {
-        content: '👁️';
-        font-size: 0.9em;
     }
 }
 
