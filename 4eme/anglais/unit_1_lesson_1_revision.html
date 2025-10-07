@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Revision - Unit 1</title>
+    <link rel="stylesheet" href="../../assets/css/revision.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 English Revision Challenge</h1>
+            <p>
+                Unit 1 - Lesson 1 | Let's ace that test, Léon! 💪
+                <a href="unit_1_lesson_1_recap.html" class="recap-link" id="recapLink">
+                    📚 View the lesson recap
+                </a>
+            </p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="score-display">
+                <span>Score: <span id="score">0</span> / <span id="total">0</span></span>
+            </div>
+            <div id="answersContainer" class="answers-container" style="display: none;">
+                <h3>Answers</h3>
+                <div id="answersList"></div>
+            </div>
+            
+            <!-- Exercise 1: Present Simple -->
+            <div class="exercise active" id="ex1">
+                <div class="exercise-title">
+                    <span>📝</span>
+                    <span>Exercise 1: Present Simple</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+                <div class="question">
+                    <p><strong>1. Complete:</strong> My brother __________ (<em>étudier</em>) English every day.</p>
+                    <input type="text" id="q1-1" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>2. Complete:</strong> Teachers __________ (<em>voir</em>) everything in class!</p>
+                    <input type="text" id="q1-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3. Complete:</strong> We __________ (<em>ne pas vouloir</em>) to be late for school.</p>
+                    <input type="text" id="q1-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>4. Complete:</strong> She __________ (<em>faire</em>) her homework every evening.</p>
+                    <input type="text" id="q1-4" placeholder="Your answer...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-prev" style="display: none;">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+                <div class="feedback" id="feedback1"></div>
+            </div>
+            
+            <!-- Exercise 2: Look + Adjective -->
+            <div class="exercise" id="ex2">
+                <div class="exercise-title">
+                    <span>😊</span>
+                    <span>Exercise 2: Look + adjective</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+                <div class="question">
+                    <p><strong>1. Complete:</strong> The girl __________ (<em>avoir l'air contrariée</em>) because she doesn't want to go back to school.</p>
+                    <input type="text" id="q2-1" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>2. Complete:</strong> My classmates __________ (<em>avoir l'air heureux</em>) today.</p>
+                    <input type="text" id="q2-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3. Complete:</strong> You __________ (<em>avoir l'air fatigué</em>)! Did you sleep well?</p>
+                    <input type="text" id="q2-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>4. Translate:</strong> <em>Il a l'air nerveux avant le test.</em></p>
+                    <input type="text" id="q2-4" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>                    
+                </div>
+                <div class="feedback" id="feedback2"></div>
+            </div>
+            
+            <!-- Exercise 3: Would Rather -->
+            <div class="exercise" id="ex3">
+                <div class="exercise-title">
+                    <span>🎯</span>
+                    <span>Exercise 3: Would rather + BV</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+                <div class="question">
+                    <p><strong>1. Complete:</strong> I __________ (<em>préférer jouer</em>) video games than do my homework.</p>
+                    <input type="text" id="q3-1" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>2. Complete:</strong> She __________ (<em>préférer rester</em>) at home than go to school.</p>
+                    <input type="text" id="q3-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3. Translate:</strong> <em>Il préférerait lire plutôt qu'étudier.</em></p>
+                    <input type="text" id="q3-3" placeholder="Your translation...">
+                </div>
+                <div class="question">
+                    <p><strong>4. Translate:</strong> <em>Nous préférerions regarder la télé plutôt qu'aller à l'école.</em></p>
+                    <input type="text" id="q3-4" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>                    
+                </div>
+                <div class="feedback" id="feedback3"></div>
+            </div>
+            
+            <!-- Exercise 4: Want to -->
+            <div class="exercise" id="ex4">
+                <div class="exercise-title">
+                    <span>💭</span>
+                    <span>Exercise 4: Want to + BV</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+                <div class="question">
+                    <p><strong>1. Quiz:</strong> Which sentence is correct?</p>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q4-1', 'a')">A) I want go to the cinema.</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q4-1', 'b')">B) I want to go to the cinema.</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q4-1', 'c')">C) I want going to the cinema.</div>
+                    <input type="hidden" id="q4-1">
+                </div>
+                <div class="question">
+                    <p><strong>2. Complete:</strong> The teenagers __________ (<em>vouloir aller à l'école</em>) every day.</p>
+                    <input type="text" id="q4-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3. Translate:</strong> <em>Elle ne veut pas faire ses devoirs.</em></p>
+                    <input type="text" id="q4-3" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+                <div class="feedback" id="feedback4"></div>
+            </div>
+            
+            <!-- Exercise 5: Advice -->
+            <div class="exercise" id="ex5">
+                <div class="exercise-title">
+                    <span>💡</span>
+                    <span>Exercise 5: Had better + BV (giving advice)</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+                <div class="question">
+                    <p><strong>1. Quiz:</strong> Which modal verb expresses advice?</p>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q5-1', 'a')">A) must</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q5-1', 'b')">B) might</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q5-1', 'c')">C) should</div>
+                    <input type="hidden" id="q5-1">
+                </div>
+                <div class="question">
+                    <p><strong>2. Complete:</strong> You __________ (<em>faire mieux d'être</em>) on time for class!</p>
+                    <input type="text" id="q5-2" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>3. Complete:</strong> He __________ (<em>ferait mieux de ne pas utiliser</em>) his phone in class.</p>
+                    <input type="text" id="q5-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>4. Translate:</strong> <em>Tu ferais mieux ne pas tricher pendant le test !</em></p>
+                    <input type="text" id="q5-4" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+                <div class="feedback" id="feedback5"></div>
+            </div>
+            
+            <!-- Exercise 6: Have to / Don't have to -->
+            <div class="exercise" id="ex6">
+                <div class="exercise-title">
+                    <span>⚠️</span>
+                    <span>Exercise 6: Have to + BV (obligation)</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+                <div class="question">
+                    <p><strong>1. Quiz:</strong> "You have to be on time" means:</p>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q6-1', 'a')">A) C'est une obligation</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q6-1', 'b')">B) Ce n'est pas obligatoire</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q6-1', 'c')">C) C'est interdit</div>
+                    <input type="hidden" id="q6-1">
+                </div>
+                <div class="question">
+                    <p><strong>2. Quiz:</strong> Which modal verb expresses obligation?</p>
+                    <div class="quiz-option" data-value="a" onclick="selectOption(this, 'q6-2', 'a')">A) must</div>
+                    <div class="quiz-option" data-value="b" onclick="selectOption(this, 'q6-2', 'b')">B) might</div>
+                    <div class="quiz-option" data-value="c" onclick="selectOption(this, 'q6-2', 'c')">C) should</div>
+                    <input type="hidden" id="q6-2">
+                </div>
+                <div class="question">
+                    <p><strong>3. Complete:</strong> In our house, you __________ (<em>devoir être fort</em>) and determined.</p>
+                    <input type="text" id="q6-3" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>4. Complete:</strong> You __________ (<em>ne pas devoir porter</em>) a uniform in French schools.</p>
+                    <input type="text" id="q6-4" placeholder="Your answer...">
+                </div>
+                <div class="question">
+                    <p><strong>5. Translate:</strong> <em>Tu dois faire tes devoirs.</em></p>
+                    <input type="text" id="q6-5" placeholder="Your translation...">
+                </div>
+                <div class="btn-container">
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+                <div class="feedback" id="feedback6"></div>
+            </div>
+            
+            <!-- Exercise 7: Modal Expressions -->
+            <div class="exercise" id="ex7">
+                <div class="exercise-title">
+                    <span>🎯</span>
+                    <span>Exercise 7: Modal Expressions (Choose the correct form)</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+                
+                <script>
+                // Définition des options communes pour tous les select
+                const modalOptions = [
+                    { value: "would rather", text: "would rather / 'd rather" },
+                    { value: "would rather not", text: "would rather not / 'd rather not" },
+                    { value: "had better", text: "had better / 'd better" },
+                    { value: "had better not", text: "had better not / 'd better not" },
+                    { value: "have to", text: "have to (has to à la 3e pers.)" },
+                    { value: "don't have to", text: "don't have to (doesn't have to à la 3e pers.)" },
+                    { value: "want to", text: "want to (wants to à la 3e pers.)" },
+                    { value: "don't want to", text: "don't want to (doesn't want to à la 3e pers.)" },
+                    { value: "look", text: "look (looks à la 3e pers.)" },
+                    { value: "don't look", text: "don't look (doesn't look à la 3e pers.)" }
+                ];
+
+                // Fonction pour générer un menu déroulant
+                function createModalSelect(id) {
+                    const select = document.createElement('select');
+                    select.id = id;
+                    select.className = 'modal-select';
+                    
+                    // Option par défaut
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'Select an item';
+                    defaultOption.selected = true;
+                    select.appendChild(defaultOption);
+                    
+                    // Ajout des options
+                    modalOptions.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.value;
+                        opt.textContent = option.text;
+                        select.appendChild(opt);
+                    });
+                    
+                    return select;
+                }
+
+                // Fonction pour initialiser tous les selects après le chargement de la page
+                function initModalSelects() {
+                    document.querySelectorAll('.modal-select-placeholder').forEach(container => {
+                        const select = createModalSelect(container.dataset.id);
+                        container.replaceWith(select);
+                    });
+                }
+
+                // Initialisation au chargement du DOM
+                document.addEventListener('DOMContentLoaded', initModalSelects);
+                </script>
+                <div class="question">
+                    <p><strong>1.</strong> Come on, Susie, you __________ hurry if we want to catch the 5 o'clock train.</p>
+                    <div class="modal-select-placeholder" data-id="q7-1"></div>
+                    <p><em>Allez, Susie, tu ferais mieux de te dépêcher si nous voulons avoir le train de 5 h.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>2.</strong> The girl __________ upset because she doesn't want to go back to school.</p>
+                    <div class="modal-select-placeholder" data-id="q7-2"></div>
+                    <p><em>La fille a l'air contrariée parce qu'elle ne veut pas retourner à l'école.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>3.</strong> Mom, I __________ have dinner before taking my bath... I'm starving!</p>
+                    <div class="modal-select-placeholder" data-id="q7-3"></div>
+                    <p><em>Maman, je préférerais dîner avant de prendre mon bain... Je meurs de faim !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>4.</strong> In our school, students __________ wear a uniform every day.</p>
+                    <div class="modal-select-placeholder" data-id="q7-4"></div>
+                    <p><em>Dans notre école, les élèves doivent porter un uniforme tous les jours.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>5.</strong> The teenagers __________ go to school today. It's Saturday!</p>
+                    <div class="modal-select-placeholder" data-id="q7-5"></div>
+                    <p><em>Les adolescents n'ont pas à aller à l'école aujourd'hui. C'est samedi !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>6.</strong> You __________ slow down... There's a police car following us.</p>
+                    <div class="modal-select-placeholder" data-id="q7-6"></div>
+                    <p><em>Tu ferais mieux de ralentir... Il y a une voiture de police derrière nous.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>7.</strong> I __________ have a holiday in the mountains than at the seaside this year.</p>
+                    <div class="modal-select-placeholder" data-id="q7-7"></div>
+                    <p><em>Je préférerais prendre des vacances à la montagne plutôt qu'à la mer, cette année.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>8.</strong> She __________ do her homework now. She can do it later.</p>
+                    <div class="modal-select-placeholder" data-id="q7-8"></div>
+                    <p><em>Elle n'a pas à faire ses devoirs maintenant. Elle peut les faire plus tard.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>9.</strong> My classmates __________ happy today because it's the last day of school!</p>
+                    <div class="modal-select-placeholder" data-id="q7-9"></div>
+                    <p><em>Mes camarades de classe ont l'air heureux aujourd'hui parce que c'est le dernier jour d'école !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>10.</strong> Oh dear! These chocolates look good... But I __________ take any... I'm on a diet!</p>
+                    <div class="modal-select-placeholder" data-id="q7-10"></div>
+                    <p><em>Oh là là ! Ces chocolats ont l'air délicieux... mais je ferais mieux de ne pas en prendre... Je suis au régime.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>11.</strong> I __________ play video games than study for my test tomorrow.</p>
+                    <div class="modal-select-placeholder" data-id="q7-11"></div>
+                    <p><em>Je préférerais ne pas jouer aux jeux vidéo plutôt qu'étudier pour mon test de demain.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>12.</strong> We __________ go to the cinema tonight. Let's watch a movie!</p>
+                    <div class="modal-select-placeholder" data-id="q7-12"></div>
+                    <p><em>Nous voulons aller au cinéma ce soir. Regardons un film !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>13.</strong> You __________ stop crying! If not, your eyes will be red.</p>
+                    <div class="modal-select-placeholder" data-id="q7-13"></div>
+                    <p><em>Tu ferais mieux d'arrêter de pleurer ! Sinon, tu auras les yeux rouges.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>14.</strong> He __________ tired today. Maybe he didn't sleep well last night.</p>
+                    <div class="modal-select-placeholder" data-id="q7-14"></div>
+                    <p><em>Il n'a pas l'air fatigué aujourd'hui. Peut-être qu'il n'a pas bien dormi la nuit dernière.</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>15.</strong> She __________ do her homework. She doesn't like it at all!</p>
+                    <div class="modal-select-placeholder" data-id="q7-15"></div>
+                    <p><em>Elle ne veut pas faire ses devoirs. Elle n'aime pas ça du tout !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>16.</strong> You __________ use your phone in class. It's against the rules!</p>
+                    <div class="modal-select-placeholder" data-id="q7-16"></div>
+                    <p><em>Tu ferais mieux de ne pas utiliser ton téléphone en classe. C'est contre les règles !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>17.</strong> In France, students __________ be on time for class. It's important!</p>
+                    <div class="modal-select-placeholder" data-id="q7-17"></div>
+                    <p><em>En France, les élèves doivent être à l'heure en classe. C'est important !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>18.</strong> I __________ eat vegetables. I prefer pizza and burgers!</p>
+                    <div class="modal-select-placeholder" data-id="q7-18"></div>
+                    <p><em>Je préférerais ne pas manger de légumes. Je préfère la pizza et les burgers !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>19.</strong> We __________ study for the English test. It's tomorrow!</p>
+                    <div class="modal-select-placeholder" data-id="q7-19"></div>
+                    <p><em>Nous voulons étudier pour le test d'anglais. C'est demain !</em></p>
+                </div>
+                <div class="question">
+                    <p><strong>20.</strong> You __________ nervous before the test. You studied well!</p>
+                    <div class="modal-select-placeholder" data-id="q7-20"></div>
+                    <p><em>Tu n'as pas l'air nerveux avant le test. Tu as bien étudié !</em></p>
+                </div>
+                <div class="btn-container">
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+                <div class="feedback" id="feedback7"></div>
+            </div>
+            
+            <!-- Exercise 8: Vocabulary -->
+            <div class="exercise" id="ex8">
+                <div class="exercise-title">
+                    <span>📚</span>
+                    <span>Exercise 8: Vocabulary</span>
+                    <button id="toggleAnswers" class="btn-answers">Show answers</button>
+                </div>
+
+                <!-- Part 1: Translate French → English -->
+                <div class="question">
+                    <p><strong>Translate to English:</strong></p>
+                    <p>1. <em>Courage</em>: <input type="text" id="q8-1" placeholder="..."></p>
+                    <p>2. <em>Honnêteté</em>: <input type="text" id="q8-2" placeholder="..."></p>
+                    <p>3. <em>Sagesse</em>: <input type="text" id="q8-3" placeholder="..."></p>
+                    <p>4. <em>Travailleur</em>: <input type="text" id="q8-4" placeholder="..."></p>
+                    <p>5. <em>Curiosité</em>: <input type="text" id="q8-5" placeholder="..."></p>
+                    <p>6. <em>Aventureux</em>: <input type="text" id="q8-6" placeholder="..."></p>
+                    <p>7. <em>Connaissance</em>: <input type="text" id="q8-7" placeholder="..."></p>
+                    <p>8. <em>Fort</em>: <input type="text" id="q8-8" placeholder="..."></p>
+                    <p>9. <em>Indépendant</em>: <input type="text" id="q8-9" placeholder="..."></p>
+                    <p>10. <em>Déterminé</em>: <input type="text" id="q8-10" placeholder="..."></p>
+                    <p>11. <em>Juste</em>: <input type="text" id="q8-11" placeholder="..."></p>
+                    <p>12. <em>Compatissant</em>: <input type="text" id="q8-12" placeholder="..."></p>
+                    <p>13. <em>Gentil</em>: <input type="text" id="q8-13" placeholder="..."></p>
+                    <p>14. <em>Respectueux</em>: <input type="text" id="q8-14" placeholder="..."></p>
+                    <p>15. <em>Fier</em>: <input type="text" id="q8-15" placeholder="..."></p>
+                    <p>16. <em>Patient</em>: <input type="text" id="q8-16" placeholder="..."></p>
+                </div>
+
+                <!-- Part 2: Match the adjective → noun -->
+                <div class="question">
+                    <p><strong>Match the adjective to the noun:</strong></p>
+                    <p>17. Creative → <input type="text" id="q8-17" placeholder="..."></p>
+                    <p>18. Intelligent → <input type="text" id="q8-18" placeholder="..."></p>
+                    <p>19. Wise → <input type="text" id="q8-19" placeholder="..."></p>
+                    <p>20. Hard working → <input type="text" id="q8-20" placeholder="..."></p>
+                    <p>21. Curious → <input type="text" id="q8-21" placeholder="..."></p>
+                    <p>22. Adventurous → <input type="text" id="q8-22" placeholder="..."></p>
+                    <p>23. Knowledgeable → <input type="text" id="q8-23" placeholder="..."></p>
+                    <p>24. Courageous → <input type="text" id="q8-24" placeholder="..."></p>
+                    <p>25. Strong → <input type="text" id="q8-25" placeholder="..."></p>
+                    <p>26. Independent → <input type="text" id="q8-26" placeholder="..."></p>
+                    <p>27. Determined → <input type="text" id="q8-27" placeholder="..."></p>
+                    <p>28. Fair → <input type="text" id="q8-28" placeholder="..."></p>
+                    <p>29. Compassionate → <input type="text" id="q8-29" placeholder="..."></p>
+                    <p>30. Honest → <input type="text" id="q8-30" placeholder="..."></p>
+                    <p>31. Kind → <input type="text" id="q8-31" placeholder="..."></p>
+                    <p>32. Respectful → <input type="text" id="q8-32" placeholder="..."></p>
+                    <p>33. Proud → <input type="text" id="q8-33" placeholder="..."></p>
+                    <p>34. Patient → <input type="text" id="q8-34" placeholder="..."></p>
+                </div>
+
+                <div class="btn-container">
+                    <button class="btn-prev">← Previous</button>
+                    <button class="btn-check">Check ✓</button>
+                    <button class="btn-next" onclick="showFinal()">Finish! 🎉</button>
+                </div>
+                <div class="feedback" id="feedback8"></div>
+            </div>
+
+            <!-- Final Screen -->
+            <div class="final-screen" id="finalScreen">
+                <div class="emoji" id="finalEmoji">🎉</div>
+                <h2>Congratulations, Léon!</h2>
+                <p>You've completed all the exercises!</p>
+                <div class="final-score" id="finalScore">0/0</div>
+                <p id="finalMessage"></p>
+                <div style="margin-top: 20px;">
+                    <button class="btn-new" onclick="startNewSession()">New Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- À la fin du fichier, avant </body> -->
+    <script>
+        // Réponses spécifiques à cet exercice
+        window.answers = {
+            1: ['studies', 'see', "do not want", 'does'],
+            2: ['looks upset', 'look happy', 'look tired', 'He looks nervous before the test.'],
+            3: ['would rather play', 'would rather stay', "He would rather read than study.", "We would rather watch tv than go to school."],
+            4: ['B', 'want to go to school', "She does not want to do her homework."],
+            5: ['C', 'had better be', "had better not use", "You had better not cheat during the test!"],
+            6: ['A', 'A', 'have to be strong', "do not have to wear", 'You have to do your homework.'],
+            7: [
+                "had better",
+                "look",
+                "would rather",
+                "have to",
+                "don't have to",
+                "had better",
+                "would rather",
+                "don't have to",
+                "look",
+                "had better not",
+                "would rather not",
+                "want to",
+                "had better",
+                "don't look",
+                "don't want to",
+                "had better not",
+                "have to",
+                "would rather not",
+                "want to",
+                "don't look"
+            ],
+            8: [
+                // French → English (q8-1 → q8-16)
+                'courage',       // Courage
+                'honesty',       // Honnêteté
+                'wisdom',        // Sagesse
+                'hard work',     // Travailleur
+                'curiosity',     // Curiosité
+                'adventure',     // Aventureux
+                'knowledge',     // Connaissance
+                'strength',      // Fort
+                'independence',  // Indépendant
+                'strong mind',   // Déterminé
+                'fairness',      // Juste
+                'compassion',    // Compatissant
+                'honesty',       // Honnête
+                'kindness',      // Gentil
+                'respect',       // Respectueux
+                'patience',      // Patient
+                // Adjective → Noun (q8-17 → q8-34)
+                'creativity',    // Creative
+                'intelligence',  // Intelligent
+                'wisdom',        // Wise
+                'hard work',     // Hard working
+                'curiosity',     // Curious
+                'adventure',     // Adventurous
+                'knowledge',     // Knowledgeable
+                'courage',       // Courageous
+                'strength',      // Strong
+                'independence',  // Independent
+                'strong mind',   // Determined
+                'fairness',      // Fair
+                'compassion',    // Compassionate
+                'honesty',       // Honest
+                'kindness',      // Kind
+                'respect',       // Respectful
+                'pride',         // Proud
+                'patience'       // Patient
+            ]
+        };
+        
+        // Initialisation des variables globales
+        window.score = 0;
+        window.totalQuestions = 0;
+    </script>
+    <script src="../../assets/js/exercices.js"></script>
+</body>
+</html>

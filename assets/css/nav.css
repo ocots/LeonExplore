@@ -1,0 +1,67 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.nav-container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.nav-container h1 {
+    margin-bottom: 30px;
+    color: #667eea;
+}
+
+.button {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 12px;
+    font-size: 1.1em;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.button-lesson {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.button-exercise {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 25px;
+    }
+    .button {
+        padding: 12px 25px;
+        font-size: 1em;
+    }
+}
+
+/* Correction boutons mobiles */
+@media (max-width: 480px) {
+    .button {
+        display: block;       /* forcer un bloc */
+        width: 100%;          /* prend toute la largeur du container */
+        max-width: 100%;      /* ne dépasse jamais */
+        box-sizing: border-box; /* inclut padding dans la largeur */
+        margin: 10px 0;       /* espacement vertical */
+    }
+}
