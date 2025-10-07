@@ -188,6 +188,7 @@ function checkExercise(exNum) {
         const userAnswer = input?.value ?? '';
         const parent = input?.parentElement;
         const isQuiz = parent?.querySelector('.quiz-option') !== null;
+        const isSelect = input?.tagName === 'SELECT';
         const hasSelected = isQuiz ? parent.querySelector('.quiz-option.selected') !== null : userAnswer.trim() !== '';
 
         parent?.classList.remove('unanswered');
@@ -328,9 +329,9 @@ function saveProgress() {
     }
 
     const answers = {};
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 8; i++) {
         const exAnswers = {};
-        for (let j = 1; j <= 10; j++) {
+        for (let j = 1; j <= 25; j++) {
             const input = document.getElementById(`q${i}-${j}`);
             if (input) exAnswers[`q${i}-${j}`] = input.value;
         }
@@ -403,8 +404,13 @@ function loadProgress() {
 function startNewSession() {
     ['exerciseAnswers', 'activeExercise', 'savedScore', 'savedTotalQuestions', 'isFinalScreen'].forEach(k => localStorage.removeItem(k));
 
-    document.querySelectorAll('input[type="text"], input[type="hidden"]').forEach(input => {
-        input.value = '';
+    // Réinitialisation des champs texte et des sélecteurs
+    document.querySelectorAll('input[type="text"], input[type="hidden"], select').forEach(input => {
+        if (input.tagName === 'SELECT') {
+            input.selectedIndex = 0; // Réinitialise à la première option (vide)
+        } else {
+            input.value = ''; // Pour les champs texte
+        }
         const parent = input.parentElement;
         if (parent) {
             parent.classList.remove('unanswered');
@@ -496,6 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!e.target.closest('.btn-answers') && !e.target.closest('.answers-container')) hideAnswers();
     });
     document.querySelectorAll('input[type="text"]').forEach(inp => inp.addEventListener('input', () => { saveProgress(); updateProgress(); }));
+    document.querySelectorAll('select').forEach(sel => sel.addEventListener('change', () => { saveProgress(); updateProgress(); }));
     window.addEventListener('beforeunload', saveProgress);
 });
 
