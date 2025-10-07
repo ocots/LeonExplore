@@ -483,6 +483,21 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScore();
     updateProgress();
     loadProgress();
+    
+    // Gérer le retour depuis la leçon avec ancre dans l'URL
+    if (window.location.hash) {
+        const targetId = window.location.hash.substring(1); // Enlever le #
+        const targetExercise = document.getElementById(targetId);
+        if (targetExercise && targetExercise.classList.contains('exercise')) {
+            // Activer l'exercice ciblé
+            document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
+            targetExercise.classList.add('active');
+            // Scroller vers l'exercice
+            setTimeout(() => {
+                targetExercise.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+    }
 
     document.querySelectorAll('.btn-prev').forEach(btn => {
         btn.addEventListener('click', previousExerciseDynamic);
@@ -504,6 +519,19 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('input[type="text"]').forEach(inp => inp.addEventListener('input', () => { saveProgress(); updateProgress(); }));
     document.querySelectorAll('select').forEach(sel => sel.addEventListener('change', () => { saveProgress(); updateProgress(); }));
     window.addEventListener('beforeunload', saveProgress);
+    
+    // Gérer le clic sur le lien "View the lesson recap"
+    const recapLink = document.getElementById('recapLink');
+    if (recapLink) {
+        recapLink.addEventListener('click', function(e) {
+            // Trouver l'exercice actif
+            const activeExercise = document.querySelector('.exercise.active');
+            if (activeExercise) {
+                // Sauvegarder l'ID de l'exercice actif dans le localStorage
+                localStorage.setItem('activeExercise', activeExercise.id);
+            }
+        });
+    }
 });
 
 // Expose
