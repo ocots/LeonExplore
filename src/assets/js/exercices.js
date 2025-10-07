@@ -129,23 +129,56 @@ function highlightCharDifferences(norm, expected) {
     const maxLen = Math.max(normWords.length, expWords.length);
     const result = [];
 
+    // Fonction pour générer le mot surligné avec Levenshtein
+    function highlightWord(nw, ew) {
+        const n = nw.length;
+        const m = ew.length;
+
+        // Matrice Levenshtein
+        const dp = Array.from({ length: n + 1 }, () => Array(m + 1).fill(0));
+
+        for (let i = 0; i <= n; i++) dp[i][0] = i;
+        for (let j = 0; j <= m; j++) dp[0][j] = j;
+
+        for (let i = 1; i <= n; i++) {
+            for (let j = 1; j <= m; j++) {
+                if (nw[i - 1] === ew[j - 1]) dp[i][j] = dp[i - 1][j - 1];
+                else dp[i][j] = 1 + Math.min(dp[i - 1][j - 1], dp[i][j - 1], dp[i - 1][j]);
+            }
+        }
+
+        // Backtracking pour reconstruire le mot surligné
+        let i = n, j = m;
+        let highlighted = '';
+        while (i > 0 || j > 0) {
+            if (i > 0 && j > 0 && nw[i - 1] === ew[j - 1]) {
+                highlighted = nw[i - 1] + highlighted;
+                i--; j--;
+            } else if (i > 0 && j > 0 && dp[i][j] === dp[i - 1][j - 1] + 1) {
+                // Substitution
+                highlighted = `<span style="background-color:#ffcccc;">${nw[i - 1]}</span>` + highlighted;
+                i--; j--;
+            } else if (j > 0 && dp[i][j] === dp[i][j - 1] + 1) {
+                // Insertion (dans expected)
+                highlighted = `<span style="background-color:#ffcccc;">_</span>` + highlighted;
+                j--;
+            } else if (i > 0 && dp[i][j] === dp[i - 1][j] + 1) {
+                // Suppression
+                highlighted = `<span style="background-color:#ffcccc;">${nw[i - 1]}</span>` + highlighted;
+                i--;
+            }
+        }
+
+        return highlighted;
+    }
+
     for (let i = 0; i < maxLen; i++) {
         const nw = normWords[i] ?? '';
         const ew = expWords[i] ?? '';
-
         if (nw === ew) {
             result.push(nw);
         } else {
-            // Diff caractère par caractère
-            const maxChar = Math.max(nw.length, ew.length);
-            let highlightedWord = '';
-            for (let j = 0; j < maxChar; j++) {
-                const nc = nw[j] ?? '';
-                const ec = ew[j] ?? '';
-                if (nc === ec) highlightedWord += nc;
-                else highlightedWord += `<span style="background-color:#ffcccc;">${nc}</span>`;
-            }
-            result.push(highlightedWord);
+            result.push(highlightWord(nw, ew));
         }
     }
 
@@ -483,21 +516,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateScore();
     updateProgress();
     loadProgress();
-    
-    // Gérer le retour depuis la leçon avec ancre dans l'URL
-    if (window.location.hash) {
-        const targetId = window.location.hash.substring(1); // Enlever le #
-        const targetExercise = document.getElementById(targetId);
-        if (targetExercise && targetExercise.classList.contains('exercise')) {
-            // Activer l'exercice ciblé
-            document.querySelectorAll('.exercise').forEach(ex => ex.classList.remove('active'));
-            targetExercise.classList.add('active');
-            // Scroller vers l'exercice
-            setTimeout(() => {
-                targetExercise.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-        }
-    }
 
     document.querySelectorAll('.btn-prev').forEach(btn => {
         btn.addEventListener('click', previousExerciseDynamic);
@@ -531,6 +549,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('activeExercise', activeExercise.id);
             }
         });
+    }
+
+    // Mettre à jour localStorage avec l'exercice réellement actif
+    const active = document.querySelector('.exercise.active');
+    if (active) {
+        localStorage.setItem('activeExercise', active.id);
     }
 });
 

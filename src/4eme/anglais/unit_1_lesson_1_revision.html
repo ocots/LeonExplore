@@ -401,19 +401,51 @@
                     <span>Exercise 8: Vocabulary</span>
                     <button id="toggleAnswers" class="btn-answers">Show answers</button>
                 </div>
+
+                <!-- Part 1: Translate French → English -->
                 <div class="question">
                     <p><strong>Translate to English:</strong></p>
                     <p>1. <em>Courage</em>: <input type="text" id="q8-1" placeholder="..."></p>
                     <p>2. <em>Honnêteté</em>: <input type="text" id="q8-2" placeholder="..."></p>
                     <p>3. <em>Sagesse</em>: <input type="text" id="q8-3" placeholder="..."></p>
-                    <p>4. <em>Gentillesse</em>: <input type="text" id="q8-4" placeholder="..."></p>
+                    <p>4. <em>Travailleur</em>: <input type="text" id="q8-4" placeholder="..."></p>
+                    <p>5. <em>Curiosité</em>: <input type="text" id="q8-5" placeholder="..."></p>
+                    <p>6. <em>Aventureux</em>: <input type="text" id="q8-6" placeholder="..."></p>
+                    <p>7. <em>Connaissance</em>: <input type="text" id="q8-7" placeholder="..."></p>
+                    <p>8. <em>Fort</em>: <input type="text" id="q8-8" placeholder="..."></p>
+                    <p>9. <em>Indépendant</em>: <input type="text" id="q8-9" placeholder="..."></p>
+                    <p>10. <em>Déterminé</em>: <input type="text" id="q8-10" placeholder="..."></p>
+                    <p>11. <em>Juste</em>: <input type="text" id="q8-11" placeholder="..."></p>
+                    <p>12. <em>Compatissant</em>: <input type="text" id="q8-12" placeholder="..."></p>
+                    <p>13. <em>Gentil</em>: <input type="text" id="q8-13" placeholder="..."></p>
+                    <p>14. <em>Respectueux</em>: <input type="text" id="q8-14" placeholder="..."></p>
+                    <p>15. <em>Fier</em>: <input type="text" id="q8-15" placeholder="..."></p>
+                    <p>16. <em>Patient</em>: <input type="text" id="q8-16" placeholder="..."></p>
                 </div>
+
+                <!-- Part 2: Match the adjective → noun -->
                 <div class="question">
                     <p><strong>Match the adjective to the noun:</strong></p>
-                    <p>5. Creative → <input type="text" id="q8-5" placeholder="..."></p>
-                    <p>6. Curious → <input type="text" id="q8-6" placeholder="..."></p>
-                    <p>7. Patient → <input type="text" id="q8-7" placeholder="..."></p>
+                    <p>17. Creative → <input type="text" id="q8-17" placeholder="..."></p>
+                    <p>18. Intelligent → <input type="text" id="q8-18" placeholder="..."></p>
+                    <p>19. Wise → <input type="text" id="q8-19" placeholder="..."></p>
+                    <p>20. Hard working → <input type="text" id="q8-20" placeholder="..."></p>
+                    <p>21. Curious → <input type="text" id="q8-21" placeholder="..."></p>
+                    <p>22. Adventurous → <input type="text" id="q8-22" placeholder="..."></p>
+                    <p>23. Knowledgeable → <input type="text" id="q8-23" placeholder="..."></p>
+                    <p>24. Courageous → <input type="text" id="q8-24" placeholder="..."></p>
+                    <p>25. Strong → <input type="text" id="q8-25" placeholder="..."></p>
+                    <p>26. Independent → <input type="text" id="q8-26" placeholder="..."></p>
+                    <p>27. Determined → <input type="text" id="q8-27" placeholder="..."></p>
+                    <p>28. Fair → <input type="text" id="q8-28" placeholder="..."></p>
+                    <p>29. Compassionate → <input type="text" id="q8-29" placeholder="..."></p>
+                    <p>30. Honest → <input type="text" id="q8-30" placeholder="..."></p>
+                    <p>31. Kind → <input type="text" id="q8-31" placeholder="..."></p>
+                    <p>32. Respectful → <input type="text" id="q8-32" placeholder="..."></p>
+                    <p>33. Proud → <input type="text" id="q8-33" placeholder="..."></p>
+                    <p>34. Patient → <input type="text" id="q8-34" placeholder="..."></p>
                 </div>
+
                 <div class="btn-container">
                     <button class="btn-prev">← Previous</button>
                     <button class="btn-check">Check ✓</button>
@@ -421,7 +453,7 @@
                 </div>
                 <div class="feedback" id="feedback8"></div>
             </div>
-            
+
             <!-- Final Screen -->
             <div class="final-screen" id="finalScreen">
                 <div class="emoji" id="finalEmoji">🎉</div>
@@ -468,7 +500,44 @@
                 "want to",
                 "don't look"
             ],
-            8: ['courage', 'honesty', 'wisdom', 'kindness', 'creativity', 'curiosity', 'patience']
+            8: [
+                // French → English (q8-1 → q8-16)
+                'courage',       // Courage
+                'honesty',       // Honnêteté
+                'wisdom',        // Sagesse
+                'hard work',     // Travailleur
+                'curiosity',     // Curiosité
+                'adventure',     // Aventureux
+                'knowledge',     // Connaissance
+                'strength',      // Fort
+                'independence',  // Indépendant
+                'strong mind',   // Déterminé
+                'fairness',      // Juste
+                'compassion',    // Compatissant
+                'honesty',       // Honnête
+                'kindness',      // Gentil
+                'respect',       // Respectueux
+                'patience',      // Patient
+                // Adjective → Noun (q8-17 → q8-34)
+                'creativity',    // Creative
+                'intelligence',  // Intelligent
+                'wisdom',        // Wise
+                'hard work',     // Hard working
+                'curiosity',     // Curious
+                'adventure',     // Adventurous
+                'knowledge',     // Knowledgeable
+                'courage',       // Courageous
+                'strength',      // Strong
+                'independence',  // Independent
+                'strong mind',   // Determined
+                'fairness',      // Fair
+                'compassion',    // Compassionate
+                'honesty',       // Honest
+                'kindness',      // Kind
+                'respect',       // Respectful
+                'pride',         // Proud
+                'patience'       // Patient
+            ]
         };
         
         // Initialisation des variables globales
