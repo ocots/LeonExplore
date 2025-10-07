@@ -235,344 +235,155 @@
                     <span>Exercise 7: Modal Expressions (Choose the correct form)</span>
                     <button id="toggleAnswers" class="btn-answers">Show answers</button>
                 </div>
+                
+                <script>
+                // Définition des options communes pour tous les select
+                const modalOptions = [
+                    { value: "would rather", text: "would rather / 'd rather" },
+                    { value: "would rather not", text: "would rather not / 'd rather not" },
+                    { value: "had better", text: "had better / 'd better" },
+                    { value: "had better not", text: "had better not / 'd better not" },
+                    { value: "have to", text: "have to (has to à la 3e pers.)" },
+                    { value: "don't have to", text: "don't have to (doesn't have to à la 3e pers.)" },
+                    { value: "want to", text: "want to (wants to à la 3e pers.)" },
+                    { value: "don't want to", text: "don't want to (doesn't want to à la 3e pers.)" },
+                    { value: "look", text: "look (looks à la 3e pers.)" },
+                    { value: "don't look", text: "don't look (doesn't look à la 3e pers.)" }
+                ];
+
+                // Fonction pour générer un menu déroulant
+                function createModalSelect(id) {
+                    const select = document.createElement('select');
+                    select.id = id;
+                    select.className = 'modal-select';
+                    
+                    // Option par défaut
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'Select an item';
+                    defaultOption.selected = true;
+                    select.appendChild(defaultOption);
+                    
+                    // Ajout des options
+                    modalOptions.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.value;
+                        opt.textContent = option.text;
+                        select.appendChild(opt);
+                    });
+                    
+                    return select;
+                }
+
+                // Fonction pour initialiser tous les selects après le chargement de la page
+                function initModalSelects() {
+                    document.querySelectorAll('.modal-select-placeholder').forEach(container => {
+                        const select = createModalSelect(container.dataset.id);
+                        container.replaceWith(select);
+                    });
+                }
+
+                // Initialisation au chargement du DOM
+                document.addEventListener('DOMContentLoaded', initModalSelects);
+                </script>
                 <div class="question">
                     <p><strong>1.</strong> Come on, Susie, you __________ hurry if we want to catch the 5 o'clock train.</p>
-                    <select id="q7-1" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-1"></div>
                     <p><em>Allez, Susie, tu ferais mieux de te dépêcher si nous voulons avoir le train de 5 h.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>2.</strong> The girl __________ upset because she doesn't want to go back to school.</p>
-                    <select id="q7-2" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-2"></div>
                     <p><em>La fille a l'air contrariée parce qu'elle ne veut pas retourner à l'école.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>3.</strong> Mom, I __________ have dinner before taking my bath... I'm starving!</p>
-                    <select id="q7-3" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-3"></div>
                     <p><em>Maman, je préférerais dîner avant de prendre mon bain... Je meurs de faim !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>4.</strong> In our school, students __________ wear a uniform every day.</p>
-                    <select id="q7-4" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-4"></div>
                     <p><em>Dans notre école, les élèves doivent porter un uniforme tous les jours.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>5.</strong> The teenagers __________ go to school today. It's Saturday!</p>
-                    <select id="q7-5" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-5"></div>
                     <p><em>Les adolescents n'ont pas à aller à l'école aujourd'hui. C'est samedi !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>6.</strong> You __________ slow down... There's a police car following us.</p>
-                    <select id="q7-6" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-6"></div>
                     <p><em>Tu ferais mieux de ralentir... Il y a une voiture de police derrière nous.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>7.</strong> I __________ have a holiday in the mountains than at the seaside this year.</p>
-                    <select id="q7-7" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-7"></div>
                     <p><em>Je préférerais prendre des vacances à la montagne plutôt qu'à la mer, cette année.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>8.</strong> She __________ do her homework now. She can do it later.</p>
-                    <select id="q7-8" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-8"></div>
                     <p><em>Elle n'a pas à faire ses devoirs maintenant. Elle peut les faire plus tard.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>9.</strong> My classmates __________ happy today because it's the last day of school!</p>
-                    <select id="q7-9" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-9"></div>
                     <p><em>Mes camarades de classe ont l'air heureux aujourd'hui parce que c'est le dernier jour d'école !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>10.</strong> Oh dear! These chocolates look good... But I __________ take any... I'm on a diet!</p>
-                    <select id="q7-10" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-10"></div>
                     <p><em>Oh là là ! Ces chocolats ont l'air délicieux... mais je ferais mieux de ne pas en prendre... Je suis au régime.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>11.</strong> I __________ play video games than study for my test tomorrow.</p>
-                    <select id="q7-11" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-11"></div>
                     <p><em>Je préférerais ne pas jouer aux jeux vidéo plutôt qu'étudier pour mon test de demain.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>12.</strong> We __________ go to the cinema tonight. Let's watch a movie!</p>
-                    <select id="q7-12" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-12"></div>
                     <p><em>Nous voulons aller au cinéma ce soir. Regardons un film !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>13.</strong> You __________ stop crying! If not, your eyes will be red.</p>
-                    <select id="q7-13" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-13"></div>
                     <p><em>Tu ferais mieux d'arrêter de pleurer ! Sinon, tu auras les yeux rouges.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>14.</strong> He __________ tired today. Maybe he didn't sleep well last night.</p>
-                    <select id="q7-14" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-14"></div>
                     <p><em>Il n'a pas l'air fatigué aujourd'hui. Peut-être qu'il n'a pas bien dormi la nuit dernière.</em></p>
                 </div>
                 <div class="question">
                     <p><strong>15.</strong> She __________ do her homework. She doesn't like it at all!</p>
-                    <select id="q7-15" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-15"></div>
                     <p><em>Elle ne veut pas faire ses devoirs. Elle n'aime pas ça du tout !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>16.</strong> You __________ use your phone in class. It's against the rules!</p>
-                    <select id="q7-16" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-16"></div>
                     <p><em>Tu ferais mieux de ne pas utiliser ton téléphone en classe. C'est contre les règles !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>17.</strong> In France, students __________ be on time for class. It's important!</p>
-                    <select id="q7-17" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-17"></div>
                     <p><em>En France, les élèves doivent être à l'heure en classe. C'est important !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>18.</strong> I __________ eat vegetables. I prefer pizza and burgers!</p>
-                    <select id="q7-18" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-18"></div>
                     <p><em>Je préférerais ne pas manger de légumes. Je préfère la pizza et les burgers !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>19.</strong> We __________ study for the English test. It's tomorrow!</p>
-                    <select id="q7-19" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-19"></div>
                     <p><em>Nous voulons étudier pour le test d'anglais. C'est demain !</em></p>
                 </div>
                 <div class="question">
                     <p><strong>20.</strong> You __________ nervous before the test. You studied well!</p>
-                    <select id="q7-20" class="modal-select">
-                        <option value="" selected>Select an item</option>
-                        <option value="would rather / 'd rather">would rather / 'd rather</option>
-                        <option value="would rather not / 'd rather not">would rather not / 'd rather not</option>
-                        <option value="had better / 'd better">had better / 'd better</option>
-                        <option value="had better not / 'd better not">had better not / 'd better not</option>
-                        <option value="have to">have to</option>
-                        <option value="do not have to / don't have to">do not have to / don't have to</option>
-                        <option value="want to">want to</option>
-                        <option value="do not want to / don't want to">do not want to / don't want to</option>
-                        <option value="look">look</option>
-                        <option value="do not look / don't look">do not look / don't look</option>
-                    </select>
+                    <div class="modal-select-placeholder" data-id="q7-20"></div>
                     <p><em>Tu n'as pas l'air nerveux avant le test. Tu as bien étudié !</em></p>
                 </div>
                 <div class="btn-container">
@@ -636,26 +447,26 @@
             5: ['C', 'had better be', "had better not use", "You had better not cheat during the test!"],
             6: ['A', 'A', 'have to be strong', "do not have to wear", 'You have to do your homework.'],
             7: [
-                "had better / 'd better",
+                "had better",
                 "look",
-                "would rather / 'd rather",
+                "would rather",
                 "have to",
-                "do not have to / don't have to",
-                "had better / 'd better",
-                "would rather / 'd rather",
-                "do not have to / don't have to",
+                "don't have to",
+                "had better",
+                "would rather",
+                "don't have to",
                 "look",
-                "had better not / 'd better not",
-                "would rather not / 'd rather not",
+                "had better not",
+                "would rather not",
                 "want to",
-                "had better / 'd better",
-                "do not look / don't look",
-                "do not want to / don't want to",
-                "had better not / 'd better not",
+                "had better",
+                "don't look",
+                "don't want to",
+                "had better not",
                 "have to",
-                "would rather not / 'd rather not",
+                "would rather not",
                 "want to",
-                "do not look / don't look"
+                "don't look"
             ],
             8: ['courage', 'honesty', 'wisdom', 'kindness', 'creativity', 'curiosity', 'patience']
         };
