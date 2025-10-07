@@ -77,7 +77,7 @@ body {
 
 .content {
     padding: 40px;
-    position: relative; /* Le bouton est positionné par rapport à ce conteneur */
+    position: relative;
 }
 
 .section {

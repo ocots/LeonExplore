@@ -15,11 +15,9 @@ function createBackToExercisesButton() {
     if (activeExercise && activeExercise.startsWith('ex')) {
         buttonText = '← Back to exercises';
         targetUrl = `unit_1_lesson_1_revision.html#${activeExercise}`;
-        localStorage.removeItem('activeExercise');
     } else {
         buttonText = '→ Go to exercises';
         targetUrl = 'unit_1_lesson_1_revision.html#ex1';
-        localStorage.removeItem('activeExercise');
     }
     
     // Créer le conteneur du bouton
